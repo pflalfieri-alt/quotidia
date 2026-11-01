@@ -99,17 +99,42 @@ function accesso(reg){
 function avvia(){call('profilo').then(function(r){ if(!r.ok){S.tok=null;try{localStorage.removeItem('uw_amico_t')}catch(e){}return accesso(false)} S.p=r;NAV.classList.remove('hide');document.getElementById('esci').classList.remove('hide');HS.innerHTML='<small>Ciao</small> <b>'+esc(r.nome)+'</b>';tab(S.tab)})}
 document.getElementById('esci').onclick=function(){S.tok=null;try{localStorage.removeItem('uw_amico_t')}catch(e){}accesso(false)};
 [].forEach.call(NAV.querySelectorAll('button'),function(b){b.onclick=function(){tab(b.dataset.t)}});
-function tab(t){S.tab=t;[].forEach.call(NAV.querySelectorAll('button'),function(b){b.classList.toggle('on',b.dataset.t===t)});window.scrollTo(0,0);({home:home,amici:amici,premi:premi,strumenti:strumenti,news:news,chat:chat,irelia:ireliaPage})[t]()}
+var CORSI=[
+{n:"Certificazione CIAD – DigComp 2.2 + Dattilografia",u:"https://www.uniacformazione.com/prodotto/certificazione-ciad-accredia/",p:179},
+{n:"EIPASS 7 Moduli User + CIAD + Dattilografia",u:"https://www.uniacformazione.com/prodotto/certificazione-eipass/",p:189},
+{n:"Certificazione DigCompEdu – Docenti",u:"https://www.uniacformazione.com/prodotto/certificazione-digcompedu-docenti-eqia-ex-idpass/",p:189},
+{n:"Mediaform – Tecnico del comportamento ABA 30 ore",u:"https://www.uniacformazione.com/prodotto/mediaform-tecnico-del-comportamento-aba-30-ore/",p:59},
+{n:"Mediaform – Lingua dei segni italiana (LIS)",u:"https://www.uniacformazione.com/prodotto/mediaform-lingua-dei-segni-italiana-lis/",p:59},
+{n:"Mediaform – Esperto ADHD e DOP",u:"https://www.uniacformazione.com/prodotto/mediaform-esperto-adhd-e-dop/",p:59},
+{n:"Corso di formazione generale lavoratore per la sicurezza",u:"https://www.uniacformazione.com/prodotto/corso-di-formazione-generale-lavoratore-per-la-sicurezza/",p:50},
+{n:"HACCP – Alimentaristi categoria B – Regione Calabria",u:"https://www.uniacformazione.com/prodotto/haccp-alimentaristi-categoria-b-rischio-medio-regione-calabria/",p:40}
+];
+function corsi(){
+  var code=(S.p&&S.p.link||'').split('c=')[1]||'';
+  var h='<div class="card"><h2>Condividi un corso</h2><p class="mu">Scegli un corso, manda il link: se il tuo amico lo acquista online ricevi il credito (10% del prezzo senza IVA).</p>';
+  if(!CORSI.length)h+='<p class="mu">A breve i corsi disponibili.</p>';
+  CORSI.forEach(function(c,i){
+    var link=c.u+(c.u.indexOf('?')<0?'?':'&')+'amico='+encodeURIComponent(code);
+    var txt='Ti consiglio questo corso UniAC: '+c.n+' '+link;
+    h+='<div style="border-top:1px solid #e6e8ee;padding:12px 0"><b>'+esc(c.n)+'</b><br><small class="mu">'+c.p+' € · credito stimato '+(c.p/1.22*0.10).toFixed(2)+'</small><br>'
+     +'<a class="btn wa" style="text-decoration:none;text-align:center" href="https://wa.me/?text='+encodeURIComponent(txt)+'" target="_blank" rel="noopener">Invia su WhatsApp</a></div>';
+  });
+  html(h+'</div>');
+}
+
+function tab(t){S.tab=t;[].forEach.call(NAV.querySelectorAll('button'),function(b){b.classList.toggle('on',b.dataset.t===t)});window.scrollTo(0,0);({home:home,amici:amici,premi:premi,strumenti:strumenti,news:news,chat:chat,irelia:ireliaPage,corsi:corsi})[t]()}
 function home(){var p=S.p,msg=encodeURIComponent((p.messaggio||'')+' '+p.link);
   html('<div class="card cred"><div class="mu" style="color:#fff;opacity:.85">I tuoi crediti</div><div class="n">'+p.crediti+' <small>crediti</small></div><div class="stats"><div><b>'+p.segnalazioni+'</b><small>amici</small></div><div><b>'+p.iscritti+'</b><small>iscritti</small></div><div><b>'+p.crediti_totali+'</b><small>guadagnati</small></div></div></div>'+
   '<div class="card" style="background:#2E3648;color:#fff"><h2 style="color:#fff">Chiedi a Nikyta</h2><p style="color:#e8e8ee">Usala per tutto il quotidiano: studio, lavoro, CV, burocrazia, lettere e messaggi, capire un documento, organizzare la giornata. E su UniAC sa tutto. Risponde subito, a qualsiasi ora.</p><button class="btn" id="irh" style="background:#AE9A4F">Parla con Nikyta</button></div>'+
   '<div class="card"><h2>Il tuo link personale</h2><p class="mu">Quando un amico lo apre e lascia i dati, la segnalazione è tua. Per ogni amico che si iscrive ricevi crediti pari al <b>'+p.percentuale+'%</b> dell\'importo netto (1 credito = 1 €).</p><p class="mu">Il tuo livello: <b>'+p.livello+'</b> ('+p.iscritti_mese+' iscrizioni questo mese). Da '+p.soglia_agente+' iscrizioni al mese diventi Agente, da '+p.soglia_orientatore+' Orientatore: crediti extra su ogni iscrizione.</p><div class="link" id="lk">'+esc(p.link)+'</div>'+
   '<a class="btn wa" style="text-decoration:none;text-align:center" href="https://wa.me/?text='+msg+'" target="_blank" rel="noopener">Condividi su WhatsApp</a><button class="btn sec" id="cp">Copia link</button></div>'+
+  '<div class="card"><h2>Condividi un corso</h2><p class="mu">Scegli un corso del negozio e mandalo a un amico: se lo acquista online ricevi il credito.</p><button class="btn" id="bc">Scegli un corso</button></div>'+
   '<div class="card"><h2>Porta altri segnalatori</h2><p class="mu">Invita altre persone a diventare segnalatori con il tuo link: entrano nella tua rete.'+(p.rete?' Segnalatori nella tua rete: <b>'+p.rete+'</b>.':'')+'</p><div class="link">'+esc(p.link_rete||'')+'</div><a class="btn wa" style="text-decoration:none;text-align:center" href="https://wa.me/?text='+encodeURIComponent('Diventa segnalatore UniAC e guadagna crediti: '+(p.link_rete||''))+'" target="_blank" rel="noopener">Invita su WhatsApp</a><button class="btn sec" id="cp2">Copia link</button><button class="btn" id="rt" style="margin-top:8px">La mia rete'+(p.rete?' ('+p.rete+')':'')+'</button></div>'+
   (window.navigator.standalone||(window.matchMedia&&matchMedia('(display-mode: standalone)').matches)?'':'<div class="card"><h2>Metti l\'app sul telefono</h2><p class="mu">Così la apri con un tocco, come una vera app.</p><p><b>iPhone (Safari):</b><br>1. Tocca il tasto Condividi (quadrato con la freccia in su).<br>2. Scegli "Aggiungi alla schermata Home".<br>3. Tocca "Aggiungi".</p><p><b>Android (Chrome):</b><br>1. Tocca i tre puntini in alto a destra.<br>2. Scegli "Installa app" o "Aggiungi a schermata Home".<br>3. Conferma.</p></div>')+'<div class="card"><button class="btn sec" id="nw">Novità e scadenze</button><div style="height:8px"></div><button class="btn sec" id="sc">Scopri UniAC: chi siamo, servizi, contatti</button></div>'+
   '<div class="card"><h2>Come funziona</h2><p>1. Mandi il tuo link a un amico.<br>2. Un tutor lo richiama, senza impegno.<br>3. Se si iscrive e paga, i crediti arrivano qui dopo 30 giorni.<br>4. Spendi i crediti nei premi.</p></div>');
   document.getElementById('sc').onclick=scopri;document.getElementById('irh').onclick=ireliaPage;document.getElementById('nw').onclick=news;
   document.getElementById('rt').onclick=retePage;
+  document.getElementById('bc').onclick=function(){tab('corsi')};
   document.getElementById('cp2').onclick=function(){var b=this;(navigator.clipboard?navigator.clipboard.writeText(p.link_rete||''):Promise.reject()).then(function(){b.textContent='Copiato ✓'}).catch(function(){b.textContent='Tieni premuto sul link'})};
   document.getElementById('cp').onclick=function(){var b=this;(navigator.clipboard?navigator.clipboard.writeText(p.link):Promise.reject()).then(function(){b.textContent='Copiato ✓'}).catch(function(){var r=document.createRange();r.selectNodeContents(document.getElementById('lk'));var s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent='Seleziona e copia'})};
 }
