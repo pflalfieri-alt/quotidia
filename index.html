@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="it"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#2E3648">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="UniAC Amico">
+<title>Quotidia · UniAC</title>
+<link rel="apple-touch-icon" href="">
+<script>(function(){try{var c=document.createElement('canvas');c.width=c.height=180;var x=c.getContext('2d');x.fillStyle='#2E3648';x.fillRect(0,0,180,180);x.lineWidth=7;x.lineJoin='miter';function br(ox,oy,w,h,col){x.strokeStyle=col;x.beginPath();x.moveTo(ox+16,oy);x.lineTo(ox,oy);x.lineTo(ox,oy+h);x.lineTo(ox+16,oy+h);x.moveTo(ox+w-16,oy);x.lineTo(ox+w,oy);x.lineTo(ox+w,oy+h);x.lineTo(ox+w-16,oy+h);x.stroke()}br(40,26,62,80,'#F2B233');br(60,46,66,86,'#E8692D');x.fillStyle='#F6EBD8';x.fillRect(72,58,42,64);x.fillStyle='#F2B233';for(var i=0;i<6;i++)x.fillRect(77,66+i*8,32,2.5);var u=c.toDataURL('image/png'),l=document.querySelector('link[rel=apple-touch-icon]');if(l)l.href=u;var i2=document.createElement('link');i2.rel='icon';i2.href=u;document.head.appendChild(i2);window.addEventListener('DOMContentLoaded',function(){var g=document.getElementById('lg');if(g)g.src=u})}catch(e){}})();</script>
+<style>
+:root{--blu:#2E3648;--blu2:#3b4660;--or:#F28C00;--bg:#f4f5f8;--tx:#1d2330;--mu:#6b7385;--ok:#1a8f4c;--r:16px}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.45}
+body{padding-bottom:calc(76px + env(safe-area-inset-bottom))}
+header{background:var(--blu);color:#fff;padding:calc(14px + env(safe-area-inset-top)) 18px 18px;border-radius:0 0 22px 22px}
+header .top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+header b{font-size:1.05rem;letter-spacing:.2px}header span.pt{color:var(--or)}
+header small{opacity:.8}
+main{padding:16px;max-width:560px;margin:0 auto}
+.card{background:#fff;border-radius:var(--r);padding:16px;margin:0 0 14px;box-shadow:0 1px 3px rgba(20,30,50,.08)}
+h1{font-size:1.35rem;margin:0 0 6px}h2{font-size:1.05rem;margin:0 0 10px}p{margin:0 0 10px}
+.mu{color:var(--mu);font-size:.9rem}
+label{display:block;font-size:.85rem;color:var(--mu);margin:10px 0 4px}
+input,select,textarea{width:100%;font:inherit;padding:13px 14px;border:1.5px solid #d6d9e2;border-radius:12px;background:#fff;color:var(--tx)}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--or)}
+.btn{display:block;width:100%;border:0;border-radius:14px;padding:15px;font:inherit;font-weight:700;background:var(--or);color:#fff;margin-top:14px;cursor:pointer}
+.btn.sec{background:#e9ebf2;color:var(--blu)}.btn.wa{background:#1fa855}
+.btn:disabled{opacity:.6}
+.row{display:flex;gap:10px}.row>*{flex:1}
+.cred{background:linear-gradient(135deg,var(--blu),var(--blu2));color:#fff;text-align:center;padding:22px 16px}
+.cred .n{font-size:3rem;font-weight:800;line-height:1;color:#fff}.cred .n small{font-size:1rem;opacity:.85;font-weight:600}
+.stats{display:flex;gap:10px;margin-top:14px}.stats div{flex:1;background:rgba(255,255,255,.12);border-radius:12px;padding:10px 4px}
+.stats b{display:block;font-size:1.3rem}
+.link{background:#f1f2f7;border-radius:12px;padding:12px;word-break:break-all;font-size:.9rem}
+.chk{display:flex;gap:10px;align-items:flex-start;margin:12px 0;font-size:.85rem;color:var(--mu)}.chk input{width:22px;height:22px;margin-top:2px;flex:none}
+.item{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid #eceef4}.item:last-child{border:0}
+.tag{font-size:.75rem;padding:4px 10px;border-radius:99px;background:#e9ebf2;color:var(--blu);white-space:nowrap}.tag.ok{background:#dff3e7;color:var(--ok)}.tag.or{background:#fdecd2;color:#a85d00}
+nav{position:fixed;left:0;right:0;bottom:0;background:#fff;display:flex;border-top:1px solid #e3e5ec;padding:6px 6px calc(6px + env(safe-area-inset-bottom));z-index:5}
+nav button{flex:1;border:0;background:none;padding:8px 2px;font:inherit;font-size:.72rem;color:var(--mu);display:flex;flex-direction:column;align-items:center;gap:2px}
+nav button i{font-style:normal;font-size:1.3rem}nav button.on{color:var(--or);font-weight:700}
+.msg{max-width:82%;padding:10px 13px;border-radius:14px;margin:6px 0;font-size:.95rem;white-space:pre-wrap}
+.msg.u{background:var(--blu);color:#fff;margin-left:auto;border-bottom-right-radius:4px}.msg.t{background:#eceef4;border-bottom-left-radius:4px}
+.err{color:#b3261e;font-size:.9rem;margin-top:8px;min-height:1.2em}
+.foot{text-align:center;color:var(--mu);font-size:.78rem;margin:20px 0 0}
+.hide{display:none!important}
+</style></head><body>
+<header><div class="top"><div><img id="lg" alt="" width="28" height="28" style="vertical-align:middle;margin-right:8px;border-radius:7px"><b>Quotidia</b> <small>· by Uni<span class="pt">AC</span></small><div style="font-size:.68rem;opacity:.8;margin-top:2px;letter-spacing:.3px">Il tuo quotidiano, con Nikyta · Polo Tecnologico &amp; Universitario</div></div><button id="esci" class="hide" style="background:none;border:0;color:#fff;opacity:.8;font:inherit;font-size:.85rem">Esci</button></div><div id="hsub" style="margin-top:10px"></div></header>
+<main id="m"></main>
+<nav id="nav" class="hide">
+<button data-t="home" class="on"><i>🏠</i>Home</button><button data-t="irelia" style="font-weight:700"><i>🤖</i>Nikyta</button><button data-t="strumenti"><i>🧰</i>Strumenti</button><button data-t="amici"><i>👥</i>Amici</button><button data-t="premi"><i>🎁</i>Premi</button><button data-t="chat"><i>💬</i>Tutor</button>
+</nav>
+<script>
+var API='https://script.google.com/macros/s/AKfycbyt_D2hqv5w2xhrUnJfLWKs0xN-9isJWoKo0dbQ-SvW7TiEuADCJJa1k2SKgfg5nCc_vQ/exec', PRIVACY='https://www.uniacformazione.com/privacy-policy/';
+var M=document.getElementById('m'), NAV=document.getElementById('nav'), HS=document.getElementById('hsub');
+var S={tok:null,p:null,tab:'home'};
+try{S.tok=localStorage.getItem('uw_amico_t')}catch(e){}
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function call(a,d){d=d||{};d.action=a;if(S.tok&&!d.token)d.token=S.tok;
+  return fetch(API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(d)}).then(function(r){return r.json()}).catch(function(){return {ok:false,errore:'Connessione non riuscita. Riprova.'}})}
+function dt(x){try{var d=new Date(x);return d.toLocaleDateString('it-IT',{day:'2-digit',month:'short'})}catch(e){return ''}}
+function html(h){M.innerHTML=h}
+var q=new URLSearchParams(location.search), COD=(q.get('c')||'').toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,10);
+var CA=(q.get('s')||'').toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,12);try{if(CA)localStorage.setItem('uw_amico_s',CA);else CA=localStorage.getItem('uw_amico_s')||''}catch(e){}
+
+/* ---------- pagina per l'amico ---------- */
+function paginaAmico(){
+  html('<div class="card"><h1>Un amico ti consiglia UniAC</h1><p>Lauree online, master, corsi e qualifiche con un <b>tutor di accoglienza</b> che ti segue dall\'iscrizione al titolo. Lascia i tuoi dati: ti richiamiamo noi, <b>gratis e senza impegno</b>.</p>'+
+  '<label>Nome e cognome</label><input id="n" autocomplete="name"><label>Telefono</label><input id="t" type="tel" autocomplete="tel" inputmode="tel"><label>Email (facoltativa)</label><input id="e" type="email" autocomplete="email">'+
+  '<label>Cosa ti interessa?</label><select id="i"><option value="">Scegli...</option><option>Laurea online</option><option>Master</option><option>Mondo Scuola (docenti e ATA)</option><option>Corsi e qualifiche</option><option>Sicurezza sul lavoro</option><option>Non so, voglio un consiglio</option></select>'+
+  '<div class="chk"><input type="checkbox" id="c1"><span>Ho letto l\'<a href="'+PRIVACY+'" target="_blank" rel="noopener">informativa privacy</a> e acconsento al trattamento dei miei dati per essere ricontattato. *</span></div>'+
+  '<div class="chk"><input type="checkbox" id="c2"><span>Acconsento a ricevere comunicazioni informative (facoltativo).</span></div>'+
+  '<button class="btn" id="go">Richiedi di essere richiamato</button><div class="err" id="er"></div></div>'+
+  '<p class="foot">Servizio gratuito · Numero Verde <a href="tel:800598033">800 598 033</a></p>');
+  document.getElementById('go').onclick=function(){var b=this;b.disabled=true;
+    call('invia_segnalazione',{codice:COD,nome:v('n'),telefono:v('t'),email:v('e'),interesse:v('i'),consenso_privacy:ck('c1'),consenso_marketing:ck('c2')}).then(function(r){
+      if(r.ok){html('<div class="card"><h1>Grazie!</h1><p>Abbiamo ricevuto la tua richiesta. Un tutor di accoglienza ti richiamerà al più presto.</p><p class="mu">Se hai fretta chiama il Numero Verde gratuito <a href="tel:800598033">800 598 033</a>.</p></div>')}
+      else{b.disabled=false;document.getElementById('er').textContent=r.errore||'Errore'}})};
+}
+function v(id){return document.getElementById(id).value} function ck(id){return document.getElementById(id).checked}
+
+/* ---------- accesso ---------- */
+function accesso(reg){
+  NAV.classList.add('hide');document.getElementById('esci').classList.add('hide');HS.innerHTML='<small>Segnala UniAC a un amico, guadagna crediti e ottieni premi.</small>';
+  html('<div class="card"><h1>'+(reg?'Crea il tuo account':'Accedi')+'</h1>'+
+  (reg?'<div class="row"><div><label>Nome</label><input id="n"></div><div><label>Cognome</label><input id="c"></div></div>':'')+
+  '<label>Telefono</label><input id="t" type="tel" inputmode="tel" autocomplete="tel">'+(reg?'<label>Email (facoltativa)</label><input id="e" type="email">':'')+
+  '<label>PIN ('+(reg?'scegli da 4 a 6 cifre':'4-6 cifre')+')</label><input id="p" type="password" inputmode="numeric" maxlength="6" autocomplete="'+(reg?'new-password':'current-password')+'">'+
+  (reg?'<div class="chk"><input type="checkbox" id="k"><span>Ho letto l\'<a href="'+PRIVACY+'" target="_blank" rel="noopener">informativa privacy</a> e acconsento al trattamento dei miei dati. *</span></div>':'')+
+  '<button class="btn" id="go">'+(reg?'Registrati':'Entra')+'</button><div class="err" id="er"></div>'+
+  '<button class="btn sec" id="sw">'+(reg?'Ho già un account':'Non ho un account')+'</button></div>');
+  document.getElementById('sw').onclick=function(){accesso(!reg)};
+  document.getElementById('go').onclick=function(){var b=this;b.disabled=true;
+    var d=reg?{nome:v('n'),cognome:v('c'),telefono:v('t'),email:v('e'),pin:v('p'),consenso:ck('k'),sp:CA}:{telefono:v('t'),pin:v('p')};
+    call(reg?'registra':'accedi',d).then(function(r){ if(r.ok){S.tok=r.token;try{localStorage.setItem('uw_amico_t',r.token)}catch(e){}avvia()}else{b.disabled=false;document.getElementById('er').textContent=r.errore||'Errore'} })};
+}
+
+/* ---------- app ---------- */
+function avvia(){call('profilo').then(function(r){ if(!r.ok){S.tok=null;try{localStorage.removeItem('uw_amico_t')}catch(e){}return accesso(false)} S.p=r;NAV.classList.remove('hide');document.getElementById('esci').classList.remove('hide');HS.innerHTML='<small>Ciao</small> <b>'+esc(r.nome)+'</b>';tab(S.tab)})}
+document.getElementById('esci').onclick=function(){S.tok=null;try{localStorage.removeItem('uw_amico_t')}catch(e){}accesso(false)};
+[].forEach.call(NAV.querySelectorAll('button'),function(b){b.onclick=function(){tab(b.dataset.t)}});
+function tab(t){S.tab=t;[].forEach.call(NAV.querySelectorAll('button'),function(b){b.classList.toggle('on',b.dataset.t===t)});window.scrollTo(0,0);({home:home,amici:amici,premi:premi,strumenti:strumenti,news:news,chat:chat,irelia:ireliaPage})[t]()}
+function home(){var p=S.p,msg=encodeURIComponent((p.messaggio||'')+' '+p.link);
+  html('<div class="card cred"><div class="mu" style="color:#fff;opacity:.85">I tuoi crediti</div><div class="n">'+p.crediti+' <small>crediti</small></div><div class="stats"><div><b>'+p.segnalazioni+'</b><small>amici</small></div><div><b>'+p.iscritti+'</b><small>iscritti</small></div><div><b>'+p.crediti_totali+'</b><small>guadagnati</small></div></div></div>'+
+  '<div class="card" style="background:#2E3648;color:#fff"><h2 style="color:#fff">Chiedi a Nikyta</h2><p style="color:#e8e8ee">Usala per tutto il quotidiano: studio, lavoro, CV, burocrazia, lettere e messaggi, capire un documento, organizzare la giornata. E su UniAC sa tutto. Risponde subito, a qualsiasi ora.</p><button class="btn" id="irh" style="background:#AE9A4F">Parla con Nikyta</button></div>'+
+  '<div class="card"><h2>Il tuo link personale</h2><p class="mu">Quando un amico lo apre e lascia i dati, la segnalazione è tua. Per ogni amico che si iscrive ricevi crediti pari al <b>'+p.percentuale+'%</b> dell\'importo netto (1 credito = 1 €).</p><p class="mu">Il tuo livello: <b>'+p.livello+'</b> ('+p.iscritti_mese+' iscrizioni questo mese). Da '+p.soglia_agente+' iscrizioni al mese diventi Agente, da '+p.soglia_orientatore+' Orientatore: crediti extra su ogni iscrizione.</p><div class="link" id="lk">'+esc(p.link)+'</div>'+
+  '<a class="btn wa" style="text-decoration:none;text-align:center" href="https://wa.me/?text='+msg+'" target="_blank" rel="noopener">Condividi su WhatsApp</a><button class="btn sec" id="cp">Copia link</button></div>'+
+  '<div class="card"><h2>Porta altri segnalatori</h2><p class="mu">Invita altre persone a diventare segnalatori con il tuo link: entrano nella tua rete.'+(p.rete?' Segnalatori nella tua rete: <b>'+p.rete+'</b>.':'')+'</p><div class="link">'+esc(p.link_rete||'')+'</div><a class="btn wa" style="text-decoration:none;text-align:center" href="https://wa.me/?text='+encodeURIComponent('Diventa segnalatore UniAC e guadagna crediti: '+(p.link_rete||''))+'" target="_blank" rel="noopener">Invita su WhatsApp</a><button class="btn sec" id="cp2">Copia link</button><button class="btn" id="rt" style="margin-top:8px">La mia rete'+(p.rete?' ('+p.rete+')':'')+'</button></div>'+
+  (window.navigator.standalone||(window.matchMedia&&matchMedia('(display-mode: standalone)').matches)?'':'<div class="card"><h2>Metti l\'app sul telefono</h2><p class="mu">Così la apri con un tocco, come una vera app.</p><p><b>iPhone (Safari):</b><br>1. Tocca il tasto Condividi (quadrato con la freccia in su).<br>2. Scegli "Aggiungi alla schermata Home".<br>3. Tocca "Aggiungi".</p><p><b>Android (Chrome):</b><br>1. Tocca i tre puntini in alto a destra.<br>2. Scegli "Installa app" o "Aggiungi a schermata Home".<br>3. Conferma.</p></div>')+'<div class="card"><button class="btn sec" id="nw">Novità e scadenze</button><div style="height:8px"></div><button class="btn sec" id="sc">Scopri UniAC: chi siamo, servizi, contatti</button></div>'+
+  '<div class="card"><h2>Come funziona</h2><p>1. Mandi il tuo link a un amico.<br>2. Un tutor lo richiama, senza impegno.<br>3. Se si iscrive e paga, i crediti arrivano qui dopo 30 giorni.<br>4. Spendi i crediti nei premi.</p></div>');
+  document.getElementById('sc').onclick=scopri;document.getElementById('irh').onclick=ireliaPage;document.getElementById('nw').onclick=news;
+  document.getElementById('rt').onclick=retePage;
+  document.getElementById('cp2').onclick=function(){var b=this;(navigator.clipboard?navigator.clipboard.writeText(p.link_rete||''):Promise.reject()).then(function(){b.textContent='Copiato ✓'}).catch(function(){b.textContent='Tieni premuto sul link'})};
+  document.getElementById('cp').onclick=function(){var b=this;(navigator.clipboard?navigator.clipboard.writeText(p.link):Promise.reject()).then(function(){b.textContent='Copiato ✓'}).catch(function(){var r=document.createRange();r.selectNodeContents(document.getElementById('lk'));var s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent='Seleziona e copia'})};
+}
+function strumenti(){var A=[["🧮","Calcolatore Punti ATA","Calcola il tuo punteggio in graduatoria ATA","https://calcolatorepuntiata.pflgroup.org/"],["📍","Dove Ti Chiamano","Scopri dove puoi essere chiamato con le GPS","https://dovetichiamano.pflgroup.org/"],["✉️","MAD e Interpelli","Messe a disposizione e interpelli, con aiuto a scrivere la lettera","https://mad-interpelli.pflgroup.org/"],["🎓","Classi di Concorso","Quale classe puoi insegnare e quanti CFU ti mancano","https://classidiconcorso.pflgroup.org/"],["💼","Trova Lavoro","Cerca bandi e offerte per la tua qualifica","https://trova-lavoro.pflgroup.org/"],["🚀","Career Hub","CV, colloquio e percorso di carriera con aiuto AI","https://career.pflgroup.org/"]];var h='<div class="card"><h2>Strumenti gratuiti UniAC</h2><p class="mu">Usali tu e consiglia quelli utili alle persone che conosci: sono gratis.</p>';A.forEach(function(a){h+='<a href="'+a[3]+'" target="_blank" rel="noopener" style="display:flex;gap:12px;align-items:center;text-decoration:none;color:inherit;padding:12px 0;border-top:1px solid #e6e8ee"><span style="font-size:26px">'+a[0]+'</span><span><b>'+a[1]+'</b><br><small class="mu">'+a[2]+'</small></span></a>'});html(h+'</div>');}
+function ireliaPage(){window.scrollTo(0,0);S.ir=S.ir||[];[].forEach.call(NAV.querySelectorAll('button'),function(b){b.classList.toggle('on',b.dataset.t==='irelia')});html('<div class="card"><h2>Nikyta</h2><p class="mu">Chiedile qualsiasi cosa del quotidiano: studio, lavoro, CV, burocrazia, scrittura, dubbi di tutti i giorni. E tutto su UniAC. Per prezzi e iscrizioni ti risponde un tutor.</p><div id="il"></div><label>La tua domanda</label><textarea id="it" rows="2" maxlength="600"></textarea><button class="btn" id="ig">Chiedi</button><div class="err" id="ie"></div></div><div class="card"><button class="btn sec" id="ib">Torna alla Home</button></div>');
+  function draw(){document.getElementById('il').innerHTML=S.ir.length?S.ir.map(function(x){return '<div class="msg '+(x.r==='u'?'u':'t')+'">'+esc(x.t).replace(/\n/g,'<br>')+'</div>'}).join(''):'<div class="msg t">Ciao! Sono Nikyta, la tua assistente di ogni giorno. Chiedimi quello che ti serve: studio, lavoro, un CV, una lettera, un dubbio burocratico, oppure tutto su UniAC e sui crediti.</div>'}
+  draw();document.getElementById('ib').onclick=function(){tab('home')};
+  document.getElementById('ig').onclick=function(){var b=this,t=v('it');if(!t.trim())return;b.disabled=true;S.ir.push({r:'u',t:t});draw();document.getElementById('it').value='';var e=document.getElementById('ie');e.textContent='Nikyta sta scrivendo...';call('irelia',{testo:t,storia:S.ir.slice(0,-1)}).then(function(r){b.disabled=false;e.textContent='';if(r.ok){S.ir.push({r:'a',t:r.testo});draw()}else e.textContent=r.errore})}}
+function scopri(){window.scrollTo(0,0);var L=function(t,h){return '<a class="btn sec" style="text-decoration:none;text-align:center;display:block;margin-top:8px" href="'+h+'" target="_blank" rel="noopener">'+t+'</a>'};
+  html('<div class="card"><h2>Scopri UniAC</h2><p class="mu">UniAC, Polo Tecnologico &amp; Universitario, con PFL Group: università online, formazione regionale, corsi professionali e percorsi per la scuola, con sede a Cirò Marina (Calabria) e servizio in tutta Italia.</p>'+L('Chi siamo','https://www.uniacformazione.com/chi-siamo/')+L('Servizi e corsi','https://www.uniacformazione.com/')+L('Blog','https://www.uniacformazione.com/blog/')+L('Facebook','https://www.facebook.com/uniacgroup')+L('Instagram','https://www.instagram.com/uniac_group')+L('YouTube','https://www.youtube.com/@UniACGroup')+'</div><div class="card"><h2>Contatti</h2>'+L('Numero Verde 800 598 033','tel:800598033')+'<a class="btn wa" style="text-decoration:none;text-align:center;display:block;margin-top:8px" href="https://wa.me/393669996160" target="_blank" rel="noopener">Scrivici su WhatsApp</a></div><div class="card"><button class="btn" id="bk">Torna alla Home</button></div>');
+  document.getElementById('bk').onclick=function(){tab('home')};
+}
+function retePage(){window.scrollTo(0,0);html('<div class="card"><h2>La mia rete</h2><p class="mu">I segnalatori che hai portato tu e, sotto, quelli portati da loro.</p><div id="rl" class="mu">Caricamento...</div></div><div class="card"><button class="btn" id="bk2">Torna alla Home</button></div>');
+  document.getElementById('bk2').onclick=function(){tab('home')};
+  call('rete').then(function(r){var l=document.getElementById('rl');if(!r.ok){l.textContent=r.errore||'Errore';return}
+    if(!r.rete.length){l.textContent='Ancora nessun segnalatore nella tua rete. Invita qualcuno con il tuo link dalla Home.';return}
+    function R(a,d){return a.map(function(x){return '<div class="item" style="margin-left:'+(d*16)+'px"><div><b>'+esc(x.nome)+'</b><div class="mu">'+dt(x.creato)+' · '+x.amici+' amici, '+x.iscritti+' iscritti</div></div></div>'+R(x.figli||[],d+1)}).join('')}
+    l.className='';l.innerHTML=R(r.rete,0)})}
+function amici(){html('<div class="card"><h2>I miei amici</h2><div id="l" class="mu">Caricamento...</div></div>');
+  call('mie_segnalazioni').then(function(r){var l=document.getElementById('l');if(!r.ok){l.textContent=r.errore;return}
+    if(!r.lista.length){l.innerHTML='Ancora nessun amico. Condividi il tuo link dalla Home.';return}
+    l.className='';l.innerHTML=r.lista.map(function(x){var ok=x.stato==='Iscritto';return '<div class="item"><div><b>'+esc(x.nome)+'</b><div class="mu">'+dt(x.data)+'</div></div><div style="text-align:right"><span class="tag '+(ok?'ok':'')+'">'+(ok?'Iscritto +'+x.crediti:'In lavorazione')+'</span></div></div>'}).join('')})}
+function premi(){html('<div class="card"><h2>Premi</h2><p class="mu">Hai <b>'+S.p.crediti+'</b> crediti. Puoi richiedere un premio da <b>'+S.p.riscatto_min+'</b> crediti. I crediti non scadono e diventano utilizzabili 30 giorni dopo il pagamento dell\'iscritto.'+(S.p.in_maturazione?' In maturazione: <b>'+S.p.in_maturazione+'</b>.':'')+'</p><div id="l">Caricamento...</div></div><div class="card"><h2>Le mie richieste</h2><div id="r" class="mu">...</div></div>');
+  call('premi').then(function(r){var l=document.getElementById('l');if(!r.ok){l.textContent=r.errore;return}
+    l.innerHTML=r.lista.map(function(x){return '<div class="item"><div><b>'+esc(x.titolo)+'</b><div class="mu">'+esc(x.descrizione)+'</div></div><button class="btn" style="width:auto;margin:0;padding:10px 14px" data-i="'+x.id+'" '+(S.p.crediti<Math.max(x.costo,S.p.riscatto_min)?'disabled':'')+'>'+x.costo+' cr.</button></div>'}).join('')||'Nessun premio disponibile.';
+    [].forEach.call(l.querySelectorAll('button[data-i]'),function(b){b.onclick=function(){if(!confirm('Vuoi richiedere questo premio?'))return;b.disabled=true;call('riscatta',{premio_id:b.dataset.i}).then(function(x){if(x.ok){alert('Richiesta inviata. Ti contatteremo per la consegna.');avvia()}else{alert(x.errore);b.disabled=false}})}})});
+  call('mie_richieste').then(function(r){var l=document.getElementById('r');if(!r.ok||!r.lista.length){l.textContent='Nessuna richiesta.';return}l.className='';l.innerHTML=r.lista.map(function(x){return '<div class="item"><div><b>'+esc(x.premio)+'</b><div class="mu">'+dt(x.data)+' · '+x.crediti+' cr.</div></div><span class="tag or">'+esc(x.stato)+'</span></div>'}).join('')})}
+function news(){html('<div class="card"><h2>Novità e promozioni</h2><div id="l" class="mu">Caricamento...</div></div>');
+  call('news').then(function(r){var l=document.getElementById('l');if(!r.ok||!r.lista.length){l.textContent='Nessuna novità.';return}l.className='';l.innerHTML=r.lista.map(function(x){return '<div class="item" style="display:block"><span class="tag '+(x.tipo==='promo'?'or':'')+'">'+(x.tipo==='promo'?'Promozione':'Novità')+'</span> <span class="mu">'+dt(x.data)+'</span><div style="margin-top:6px"><b>'+esc(x.titolo)+'</b></div><div>'+esc(x.testo).replace(/\n/g,'<br>')+'</div></div>'}).join('')})}
+function chat(){html('<div class="card"><h2>Chiedi a Nikyta</h2><p class="mu">L\'assistente UniAC risponde subito: come funziona l\'app, i crediti, gli strumenti gratuiti, come presentare UniAC a un amico.</p><button class="btn" id="ir">Parla con Nikyta</button></div><div class="card"><h2>Scrivi a un tutor</h2><div id="l" class="mu">Caricamento...</div><label>Il tuo messaggio</label><textarea id="t" rows="3" maxlength="800"></textarea><button class="btn" id="go">Invia</button><div class="err" id="er"></div><p class="mu" style="margin-top:12px">Ti rispondiamo il prima possibile. Per urgenze: Numero Verde <a href="tel:800598033">800 598 033</a>.</p></div>');
+  function load(){call('chat_lista').then(function(r){var l=document.getElementById('l');if(!r.ok){l.textContent=r.errore;return}l.className='';l.innerHTML=r.lista.length?r.lista.map(function(x){return '<div class="msg '+(x.da==='utente'?'u':'t')+'">'+esc(x.testo)+'</div>'}).join(''):'<span class="mu">Nessun messaggio. Scrivici pure!</span>'})}
+  load();document.getElementById('ir').onclick=ireliaPage;document.getElementById('go').onclick=function(){var b=this,t=v('t');if(!t.trim())return;b.disabled=true;call('chat_invia',{testo:t}).then(function(r){b.disabled=false;if(r.ok){document.getElementById('t').value='';load()}else document.getElementById('er').textContent=r.errore})}}
+
+if(COD){paginaAmico()} else if(S.tok){avvia()} else {accesso(!!q.get('s'))}
+</script></body></html>
+
+<!-- v2 rete -->
