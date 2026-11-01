@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-title" content="UniAC Amico">
 <title>Quotidia · UniAC</title>
 <link rel="apple-touch-icon" href="">
-<script>(function(){try{var c=document.createElement('canvas');c.width=c.height=180;var x=c.getContext('2d');x.fillStyle='#2E3648';x.fillRect(0,0,180,180);x.lineWidth=7;x.lineJoin='miter';function br(ox,oy,w,h,col){x.strokeStyle=col;x.beginPath();x.moveTo(ox+16,oy);x.lineTo(ox,oy);x.lineTo(ox,oy+h);x.lineTo(ox+16,oy+h);x.moveTo(ox+w-16,oy);x.lineTo(ox+w,oy);x.lineTo(ox+w,oy+h);x.lineTo(ox+w-16,oy+h);x.stroke()}br(40,26,62,80,'#F2B233');br(60,46,66,86,'#E8692D');x.fillStyle='#F6EBD8';x.fillRect(72,58,42,64);x.fillStyle='#F2B233';for(var i=0;i<6;i++)x.fillRect(77,66+i*8,32,2.5);var u=c.toDataURL('image/png'),l=document.querySelector('link[rel=apple-touch-icon]');if(l)l.href=u;var i2=document.createElement('link');i2.rel='icon';i2.href=u;document.head.appendChild(i2);window.addEventListener('DOMContentLoaded',function(){var g=document.getElementById('lg');if(g)g.src=u})}catch(e){}})();</script>
+<script>(function(){try{var c=document.createElement('canvas');c.width=c.height=180;var x=c.getContext('2d');x.fillStyle='#2E3648';x.fillRect(0,0,180,180);x.lineWidth=7;x.lineJoin='miter';function br(ox,oy,w,h,col){x.strokeStyle=col;x.beginPath();x.moveTo(ox+16,oy);x.lineTo(ox,oy);x.lineTo(ox,oy+h);x.lineTo(ox+16,oy+h);x.moveTo(ox+w-16,oy);x.lineTo(ox+w,oy);x.lineTo(ox+w,oy+h);x.lineTo(ox+w-16,oy+h);x.stroke()}br(40,26,62,80,'#F2B233');br(60,46,66,86,'#E8692D');x.fillStyle='#F6EBD8';x.fillRect(72,58,42,64);x.fillStyle='#F2B233';for(var i=0;i<6;i++)x.fillRect(77,66+i*8,32,2.5);var u=c.toDataURL('image/png'),l=document.querySelector('link[rel=apple-touch-icon]');if(l)l.href=u;var i2=document.createElement('link');i2.rel='icon';i2.href=u;document.head.appendChild(i2);window.addEventListener('DOMContentLoaded',function(){})}catch(e){}})();</script>
 <style>
 :root{--blu:#2E3648;--blu2:#3b4660;--or:#F28C00;--bg:#f4f5f8;--tx:#1d2330;--mu:#6b7385;--ok:#1a8f4c;--r:16px}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -45,7 +45,7 @@ nav button i{font-style:normal;font-size:1.3rem}nav button.on{color:var(--or);fo
 .foot{text-align:center;color:var(--mu);font-size:.78rem;margin:20px 0 0}
 .hide{display:none!important}
 </style></head><body>
-<header><div class="top"><div><img id="lg" alt="" width="28" height="28" style="vertical-align:middle;margin-right:8px;border-radius:7px"><b>Quotidia</b> <small>· by Uni<span class="pt">AC</span></small><div style="font-size:.78rem;opacity:.95;margin-top:3px">Il tuo quotidiano, con Nikyta</div><div style="font-size:.66rem;opacity:.7;margin-top:1px;letter-spacing:.3px;white-space:nowrap">Polo Tecnologico &amp; Universitario</div></div><button id="esci" class="hide" style="background:none;border:0;color:#fff;opacity:.8;font:inherit;font-size:.85rem">Esci</button></div><div id="hsub" style="margin-top:10px"></div></header>
+<header><div class="top"><div style="background:#fff;border-radius:12px;padding:5px 10px;display:flex;align-items:center"><img id="lg" alt="UniAC Polo Tecnologico &amp; Universitario" src="https://www.uniacformazione.com/wp-content/uploads/2026/10/logo-uniac-polo-tecnologico-header.png" style="height:44px;width:auto;display:block"></div><div style="display:flex;flex-direction:column;align-items:center;gap:4px"><button id="nk" aria-label="Nikyta" style="background:rgba(255,255,255,.14);border:0;border-radius:50%;width:44px;height:44px;font-size:1.5rem;line-height:1">🤖</button><button id="esci" class="hide" style="background:none;border:0;color:#fff;opacity:.8;font:inherit;font-size:.78rem;padding:0">Esci</button></div></div><div style="margin-top:10px;font-size:1.05rem"><b>Quotidia</b> <small>· by Uni<span class="pt">AC</span> · il tuo quotidiano, con Nikyta</small></div><div id="hsub" style="margin-top:6px"></div></header>
 <main id="m"></main>
 <nav id="nav" class="hide">
 <button data-t="home" class="on"><i>🏠</i>Home</button><button data-t="irelia" style="font-weight:700"><i>🤖</i>Nikyta</button><button data-t="strumenti"><i>🧰</i>Strumenti</button><button data-t="amici"><i>👥</i>Amici</button><button data-t="premi"><i>🎁</i>Premi</button><button data-t="chat"><i>💬</i>Tutor</button>
@@ -97,6 +97,7 @@ function accesso(reg){
 
 /* ---------- app ---------- */
 function avvia(){call('profilo').then(function(r){ if(!r.ok){S.tok=null;try{localStorage.removeItem('uw_amico_t')}catch(e){}return accesso(false)} S.p=r;NAV.classList.remove('hide');document.getElementById('esci').classList.remove('hide');HS.innerHTML='<small>Ciao</small> <b>'+esc(r.nome)+'</b>';tab(S.tab)})}
+document.getElementById('nk').onclick=function(){if(S.p)tab('irelia')};
 document.getElementById('esci').onclick=function(){S.tok=null;try{localStorage.removeItem('uw_amico_t')}catch(e){}accesso(false)};
 [].forEach.call(NAV.querySelectorAll('button'),function(b){b.onclick=function(){tab(b.dataset.t)}});
 var CORSI=[
