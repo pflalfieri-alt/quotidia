@@ -127,7 +127,8 @@ function accesso(reg){
 }
 
 /* ---------- app ---------- */
-function avvia(){call('profilo').then(function(r){ if(!r.ok){S.tok=null;try{localStorage.removeItem('uw_amico_t')}catch(e){}return accesso(false)} S.p=r;NAV.classList.remove('hide');document.getElementById('esci').classList.remove('hide');HS.innerHTML='<small>Ciao</small> <b>'+esc(r.nome)+'</b>';tab(S.tab);partnerInit()})}
+function avvia(){call('partner_me').then(function(pm){if(pm&&pm.ok&&pm.solo){S.part=pm;S.solo=true;S.p=null;S.tab='partner';NAV.innerHTML='';NAV.classList.remove('hide');document.getElementById('esci').classList.remove('hide');HS.innerHTML='<small>Ciao</small> <b>'+esc(pm.nome)+'</b>';partnerInit();tab('partner');return}avviaSegn()})}
+function avviaSegn(){call('profilo').then(function(r){ if(!r.ok){S.tok=null;try{localStorage.removeItem('uw_amico_t')}catch(e){}return accesso(false)} S.p=r;NAV.classList.remove('hide');document.getElementById('esci').classList.remove('hide');HS.innerHTML='<small>Ciao</small> <b>'+esc(r.nome)+'</b>';tab(S.tab);partnerInit()})}
 
 document.getElementById('nk').onclick=function(){if(S.p)tab('irelia')};document.getElementById('esci').onclick=function(){S.tok=null;try{localStorage.removeItem('uw_amico_t')}catch(e){}accesso(false)};
 [].forEach.call(NAV.querySelectorAll('button'),function(b){b.onclick=function(){tab(b.dataset.t)}});
