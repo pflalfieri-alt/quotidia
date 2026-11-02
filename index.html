@@ -156,7 +156,7 @@ function corsi(){
 
 var DIP=null;window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();DIP=e});
 function installa(){var h=document.getElementById('insth');if(DIP){DIP.prompt();DIP=null;return}var ios=/iphone|ipad|ipod/i.test(navigator.userAgent);h.innerHTML=ios?'<b>iPhone:</b> tocca il tasto Condividi (quadrato con la freccia in su) in basso in Safari, poi <b>Aggiungi alla schermata Home</b>.':'<b>Android:</b> tocca i tre puntini in alto a destra, poi <b>Installa app</b> o <b>Aggiungi a schermata Home</b>.'}
-var VER='20261101b';(function(){try{fetch('index.html?_='+Date.now(),{cache:'no-store'}).then(function(r){return r.text()}).then(function(t){var m=t.match(/var VER='([^']+)'/);if(m&&m[1]!==VER){var k='uw_vtry';var n=0;try{n=Number(sessionStorage.getItem(k)||0)}catch(e){}if(n<2){try{sessionStorage.setItem(k,String(n+1))}catch(e){}location.replace(location.pathname+'?v='+m[1]+'&t='+Date.now())}}}).catch(function(){})}catch(e){}})();
+var VER='20261102a';(function(){try{fetch('index.html?_='+Date.now(),{cache:'no-store'}).then(function(r){return r.text()}).then(function(t){var m=t.match(/var VER='([^']+)'/);if(m&&m[1]!==VER){var k='uw_vtry';var n=0;try{n=Number(sessionStorage.getItem(k)||0)}catch(e){}if(n<2){try{sessionStorage.setItem(k,String(n+1))}catch(e){}location.replace(location.pathname+'?v='+m[1]+'&t='+Date.now())}}}).catch(function(){})}catch(e){}})();
 var RINF=0;function rinfresca(){if(!S.tok||RINF)return;RINF=1;call('profilo').then(function(r){RINF=0;if(r&&r.ok&&S.p){var c=S.p.crediti+'|'+S.p.in_maturazione+'|'+S.p.segnalazioni+'|'+S.p.iscritti;S.p=r;var n=r.crediti+'|'+r.in_maturazione+'|'+r.segnalazioni+'|'+r.iscritti;if(c!==n&&S.tab!=='irelia'&&S.tab!=='chat'){tab(S.tab)}}}).catch(function(){RINF=0})}
 document.addEventListener('visibilitychange',function(){if(!document.hidden)rinfresca()});
 function tab(t){S.tab=t;document.body.setAttribute('data-tab',t);[].forEach.call(NAV.querySelectorAll('button'),function(b){b.classList.toggle('on',b.dataset.t===t)});window.scrollTo(0,0);rinfresca();({home:home,amici:amici,premi:premi,strumenti:strumenti,catalogo:catalogo,contatti:contatti,news:news,chat:chat,irelia:ireliaPage,corsi:corsi})[t]()}
@@ -214,6 +214,15 @@ function blog(){var el=document.getElementById('bl');fetch('https://www.uniacfor
 function chat(){html('<div class="card"><h2>Scrivi a un tutor</h2><div id="l" class="mu">Caricamento...</div><label>Il tuo messaggio</label><textarea id="t" rows="3" maxlength="800"></textarea><button class="btn" id="go">Invia</button><div class="err" id="er"></div><p class="mu" style="margin-top:12px">Ti rispondiamo il prima possibile. Per urgenze: Numero Verde <a href="tel:800598033">800 598 033</a>.</p></div>');
   function load(){call('chat_lista').then(function(r){var l=document.getElementById('l');if(!r.ok){l.textContent=r.errore;return}l.className='';l.innerHTML=r.lista.length?r.lista.map(function(x){return '<div class="msg '+(x.da==='utente'?'u':'t')+'">'+esc(x.testo)+'</div>'}).join(''):'<span class="mu">Nessun messaggio. Scrivici pure!</span>'})}
   load();document.getElementById('go').onclick=function(){var b=this,t=v('t');if(!t.trim())return;b.disabled=true;call('chat_invia',{testo:t}).then(function(r){b.disabled=false;if(r.ok){document.getElementById('t').value='';load()}else document.getElementById('er').textContent=r.errore})}}
+
+/* ---------- statistiche anonime (nessun dato personale) ---------- */
+var SID='';try{SID=localStorage.getItem('uw_sid')||'';if(!SID){SID=Math.random().toString(36).slice(2,10)+Math.random().toString(36).slice(2,8);localStorage.setItem('uw_sid',SID)}}catch(e){SID=SID||Math.random().toString(36).slice(2,12)}
+var SA=!!(window.navigator.standalone||(window.matchMedia&&matchMedia('(display-mode: standalone)').matches));
+function st(t){try{fetch(API,{method:'POST',keepalive:true,headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'stat',tipo:t,sid:SID,ref:COD?'amico':(CA?'rete':''),sa:SA,v:'20261102'})}).catch(function(){})}catch(e){}}
+(function(){var _c=call;call=function(a,d){var p=_c(a,d);if(a==='registra'||a==='irelia')p.then(function(r){if(r&&r.ok)st(a==='registra'?'registrazione':'nikyta')});return p}})();
+window.addEventListener('appinstalled',function(){st('installata')});
+document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href^="https://wa.me"],#cp,#cp2');if(a)st('condivisione')});
+try{if(!sessionStorage.getItem('uw_v')){sessionStorage.setItem('uw_v','1');st('visita');if(SA)st('apertura_icona')}}catch(e){st('visita')}
 
 if(COD){paginaAmico()} else if(S.tok){avvia()} else {accesso(!!q.get('s'))}
 </script><script>if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(function(){})</script></body></html>
