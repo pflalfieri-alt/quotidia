@@ -19,6 +19,7 @@ input,select{width:100%;padding:12px;border:1px solid #d5d9e2;border-radius:12px
 .cons{display:flex;gap:10px;align-items:flex-start;margin:14px 0 4px;font-size:.85rem;color:#5a6478;line-height:1.4}.cons input{width:auto;margin-top:2px}
 .btn{display:block;width:100%;text-align:center;border:0;border-radius:14px;background:#F07D00;color:#fff;font-weight:800;font-size:1.08rem;padding:15px;margin-top:14px;cursor:pointer;text-decoration:none;font-family:inherit}
 .btn.w{background:#fff;color:#042654}.btn:disabled{opacity:.6}
+input[type=file]{padding:10px;background:#f7f8fb}.hint{font-size:.8rem;color:#5a6478;margin-top:4px}
 .err{color:#b3261e;font-size:.9rem;min-height:1.2em;margin-top:8px}
 .ok{background:#e9f7ee;color:#1b5e33;border-radius:14px;padding:16px;font-size:1rem;line-height:1.5}
 .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:34px}
@@ -34,7 +35,7 @@ input,select{width:100%;padding:12px;border:1px solid #d5d9e2;border-radius:12px
 <p class="lead">Ogni giorno qualcuno ti chiede di una laurea, dei punti per le graduatorie, di una qualifica o di un corso sulla sicurezza. Con Quotidia lo segnali in un minuto: un tutor UniAC lo chiama e lo segue fino all'iscrizione.</p>
 <ul class="ck"><li>Compenso su ogni iscrizione</li><li>Nessun investimento e nessuna quota d'ingresso</li><li>Kit Quotidia: locandine, espositore da banco, pieghevoli</li><li>Area Partner dal PC o dal telefono, per seguire ogni segnalazione</li></ul>
 </div>
-<div class="card" id="box"><h2>Diventa partner</h2><p class="mu">Lasciaci i tuoi dati: ti chiamiamo noi per spiegarti tutto, senza impegno.</p>
+<div class="card" id="box"><h2>Candidati come partner</h2><p class="mu">Lasciaci i dati e il CV del referente: se il profilo è adatto ti contattiamo per spiegarti tutto e fissare un colloquio.</p>
 <form id="f" novalidate>
 <label for="n">Nome e cognome</label><input id="n" autocomplete="name" required>
 <label for="e">Nome del CAF, patronato, sindacato o agenzia</label><input id="e" autocomplete="organization" required>
@@ -42,11 +43,12 @@ input,select{width:100%;padding:12px;border:1px solid #d5d9e2;border-radius:12px
 <label for="c">Città e provincia</label><input id="c" autocomplete="address-level2" required>
 <label for="p">Telefono</label><input id="p" type="tel" inputmode="tel" autocomplete="tel" required>
 <label for="m">Email (facoltativa)</label><input id="m" type="email" autocomplete="email">
+<label for="cv">CV del referente</label><input id="cv" type="file" accept=".pdf,.doc,.docx,image/jpeg,image/png"><div class="hint">PDF, Word o foto, massimo 5 MB.</div>
 <div class="cons"><input type="checkbox" id="k"><label for="k" style="margin:0">Acconsento al trattamento dei miei dati per essere ricontattato da UniAC Srl, come indicato nella <a href="https://www.uniacformazione.com/privacy-policy/" target="_blank" rel="noopener">privacy policy</a>.</label></div>
-<button class="btn" id="go" type="submit">Voglio diventare partner</button><div class="err" id="er" role="alert"></div>
+<button class="btn" id="go" type="submit">Invia la candidatura</button><div class="err" id="er" role="alert"></div>
 </form></div></div>
 <div class="steps">
-<div class="st"><b>1</b><h3>Ti chiamiamo</h3><p>Ti spieghiamo come funziona e firmiamo insieme la convenzione. Gratis.</p></div>
+<div class="st"><b>1</b><h3>Candidatura e colloquio</h3><p>Valutiamo il profilo, ti spieghiamo tutto e fai un colloquio online con noi. Poi firmiamo la convenzione. Gratis.</p></div>
 <div class="st"><b>2</b><h3>Segnali i tuoi clienti</h3><p>Con il loro consenso, dall'Area Partner: bastano nome, telefono e cosa cercano.</p></div>
 <div class="st"><b>3</b><h3>Il tutor fa il resto</h3><p>Un tutor UniAC li orienta e li segue. Per ogni iscrizione ricevi il tuo compenso.</p></div>
 </div>
@@ -54,11 +56,10 @@ input,select{width:100%;padding:12px;border:1px solid #d5d9e2;border-radius:12px
 <div class="foot">Quotidia™ è un servizio di <a href="https://www.uniacformazione.com/" target="_blank" rel="noopener">UniAC</a> – Polo Tecnologico &amp; Universitario · PFL Group · Cirò Marina (KR)<br>Ente di formazione accreditato Regione Calabria · ISO 9001 · Numero Verde 800 598 033 · <a href="https://www.uniacformazione.com/privacy-policy/" target="_blank" rel="noopener">Privacy</a></div>
 </div>
 <script>var DA=(function(){var q=new URLSearchParams(location.search);return (q.get('da')||q.get('utm_source')||'').toLowerCase().replace(/[^a-z0-9_-]/g,'').slice(0,20)})();var API="https://script.google.com/macros/s/AKfycbyt_D2hqv5w2xhrUnJfLWKs0xN-9isJWoKo0dbQ-SvW7TiEuADCJJa1k2SKgfg5nCc_vQ/exec";
+function leggiFile(inp){return new Promise(function(ok,ko){var f=inp.files&&inp.files[0];if(!f)return ko('Allega il tuo CV (PDF, Word o foto).');if(f.size>5*1024*1024)return ko('Il file è troppo grande: massimo 5 MB.');var okt=/^(application\/pdf|image\/(jpeg|png)|application\/msword|application\/vnd\.openxmlformats-officedocument\.wordprocessingml\.document)$/;if(!okt.test(f.type))return ko('Formato non valido: usa PDF, Word, JPG o PNG.');var r=new FileReader();r.onload=function(){ok({nome:f.name,mime:f.type,b64:String(r.result).split(',')[1]})};r.onerror=function(){ko('Non riesco a leggere il file.')};r.readAsDataURL(f)})}
+function invia(d,b,er,box,grazie){b.disabled=true;er.textContent='Invio in corso... (può richiedere qualche secondo)';fetch(API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(d)}).then(function(r){return r.json()}).then(function(r){if(r&&r.ok){box.innerHTML=grazie}else{b.disabled=false;er.textContent=(r&&r.errore)||'Invio non riuscito. Riprova.'}}).catch(function(){b.disabled=false;er.textContent='Connessione non riuscita. Riprova oppure chiama il Numero Verde 800 598 033.'})}
 document.getElementById('f').onsubmit=function(ev){ev.preventDefault();var g=function(i){return (document.getElementById(i).value||'').trim()},er=document.getElementById('er'),b=document.getElementById('go');
 if(!g('n')||!g('e')||!g('c')){er.textContent='Compila nome, ente e città.';return}
 if(g('p').replace(/\D/g,'').length<9){er.textContent='Scrivi un numero di telefono valido.';return}
 if(!document.getElementById('k').checked){er.textContent='Per essere ricontattato serve il consenso.';return}
-b.disabled=true;er.textContent='Invio in corso...';
-fetch(API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'richiesta_partner',nome:g('n'),ente:g('e'),tipo:g('t'),citta:g('c'),telefono:g('p'),email:g('m'),consenso:true,canale:DA||'pagina'})}).then(function(r){return r.json()}).then(function(r){
-if(r&&r.ok){document.getElementById('box').innerHTML='<h2>Grazie!</h2><div class="ok">Abbiamo ricevuto la tua richiesta. Ti chiamiamo entro un giorno lavorativo dal numero dell\'ufficio <b>0962 19 16 684</b>.<br><br>Intanto puoi scoprire Quotidia: <a href="https://quotidia.pflgroup.org/?da='+(DA||'partner')+'">apri l\'app</a>.</div>'}
-else{b.disabled=false;er.textContent=(r&&r.errore)||'Invio non riuscito. Riprova.'}}).catch(function(){b.disabled=false;er.textContent='Connessione non riuscita. Riprova oppure chiama il Numero Verde 800 598 033.'})};</script></body></html>
+leggiFile(document.getElementById('cv')).then(function(file){invia({action:'candidatura',tipo:'partner',nome:g('n'),ente:g('e'),tipoEnte:g('t'),citta:g('c'),telefono:g('p'),email:g('m'),consenso:true,canale:DA||'pagina',file:file},b,er,document.getElementById('box'),'<h2>Grazie!</h2><div class="ok">Abbiamo ricevuto la tua candidatura. La valutiamo e, se il profilo è adatto, ti contattiamo dal numero dell\'ufficio <b>0962 19 16 684</b> per spiegarti tutto e fissare un colloquio.</div>')},function(m){er.textContent=m})};</script></body></html>

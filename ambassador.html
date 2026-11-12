@@ -19,6 +19,7 @@ input,select{width:100%;padding:12px;border:1px solid #d5d9e2;border-radius:12px
 .cons{display:flex;gap:10px;align-items:flex-start;margin:14px 0 4px;font-size:.85rem;color:#5a6478;line-height:1.4}.cons input{width:auto;margin-top:2px}
 .btn{display:block;width:100%;text-align:center;border:0;border-radius:14px;background:#F07D00;color:#fff;font-weight:800;font-size:1.08rem;padding:15px;margin-top:14px;cursor:pointer;text-decoration:none;font-family:inherit}
 .btn.w{background:#fff;color:#042654}.btn:disabled{opacity:.6}
+input[type=file]{padding:10px;background:#f7f8fb}.hint{font-size:.8rem;color:#5a6478;margin-top:4px}
 .err{color:#b3261e;font-size:.9rem;min-height:1.2em;margin-top:8px}
 .ok{background:#e9f7ee;color:#1b5e33;border-radius:14px;padding:16px;font-size:1rem;line-height:1.5}
 .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:34px}
@@ -32,18 +33,33 @@ input,select{width:100%;padding:12px;border:1px solid #d5d9e2;border-radius:12px
 <span class="tag">Per chi conosce tante persone</span>
 <h1>Diventa <b>Ambassador</b> Quotidia</h1>
 <p class="lead">Conosci qualcuno che cerca una laurea, punti per le graduatorie, una qualifica o un corso? Segnalalo in 30 secondi dal telefono: un tutor UniAC lo chiama gratis e lo segue fino all'iscrizione.</p>
-<ul class="ck"><li>Niente vendita e niente soldi da gestire</li><li>Per ogni iscrizione ricevi crediti da trasformare in premi</li><li>Crediti anche dalle iscrizioni della tua squadra</li><li>Breve corso nell'app che ti spiega tutto</li></ul>
+<ul class="ck"><li>Niente vendita e niente soldi da gestire</li><li>Per ogni iscrizione ricevi crediti da trasformare in premi</li><li>Crediti anche dalle iscrizioni della tua squadra</li><li>Colloquio e breve corso: non sei mai da solo</li></ul>
 </div>
-<div class="card"><h2>Inizia adesso</h2><p class="mu">La registrazione è gratuita e richiede un minuto: nome, telefono e un PIN che scegli tu.</p>
-<a class="btn" id="go" href="https://quotidia.pflgroup.org/?vai=ambassador">Registrati come Ambassador</a>
-<a class="btn w" style="border:1px solid #d5d9e2" href="https://quotidia.pflgroup.org/regolamento.html" target="_blank" rel="noopener">Leggi il regolamento</a>
-<p class="mu" style="margin-top:14px">Hai già un account? <a id="ent" href="https://quotidia.pflgroup.org/">Entra in Quotidia</a></p></div></div>
+<div class="card" id="box"><h2>Candidati come Ambassador</h2><p class="mu">Lasciaci i tuoi dati e il CV: se il profilo è adatto ti contattiamo per spiegarti tutto e fissare un colloquio online.</p>
+<form id="f" novalidate>
+<label for="n">Nome e cognome</label><input id="n" autocomplete="name" required>
+<label for="c">Città e provincia</label><input id="c" autocomplete="address-level2" required>
+<label for="p">Telefono</label><input id="p" type="tel" inputmode="tel" autocomplete="tel" required>
+<label for="m">Email (facoltativa)</label><input id="m" type="email" autocomplete="email">
+<label for="cv">Il tuo CV</label><input id="cv" type="file" accept=".pdf,.doc,.docx,image/jpeg,image/png"><div class="hint">PDF, Word o foto, massimo 5 MB.</div>
+<div class="cons"><input type="checkbox" id="k"><label for="k" style="margin:0">Acconsento al trattamento dei miei dati per la valutazione della candidatura da parte di UniAC Srl, come indicato nella <a href="https://www.uniacformazione.com/privacy-policy/" target="_blank" rel="noopener">privacy policy</a>.</label></div>
+<button class="btn" id="go" type="submit">Invia la candidatura</button><div class="err" id="er" role="alert"></div>
+</form>
+<p class="mu" style="margin-top:14px">Leggi il <a href="https://quotidia.pflgroup.org/regolamento.html" target="_blank" rel="noopener">regolamento</a> · Hai già un account? <a id="ent" href="https://quotidia.pflgroup.org/">Entra in Quotidia</a></p></div></div>
 <div class="steps">
-<div class="st"><b>1</b><h3>Ti registri</h3><p>Gratis, dal telefono. Ricevi il tuo link personale.</p></div>
-<div class="st"><b>2</b><h3>Segnali</h3><p>Con il consenso della persona: nome, telefono e cosa cerca. Bastano 30 secondi.</p></div>
+<div class="st"><b>1</b><h3>Candidatura e colloquio</h3><p>Valutiamo il CV, ti spieghiamo tutto e fai un breve colloquio online con noi.</p></div>
+<div class="st"><b>2</b><h3>Corso e attivazione</h3><p>Segui il breve corso nell’app, ricevi il tuo link personale e inizi a segnalare in 30 secondi.</p></div>
 <div class="st"><b>3</b><h3>Ricevi i crediti</h3><p>Se si iscrive, i crediti arrivano nella tua area. Li trasformi nei premi del catalogo.</p></div>
 </div>
 <div class="slogan">Non vendiamo formazione. Costruiamo futuri.</div>
 <div class="foot">Quotidia™ è un servizio di <a href="https://www.uniacformazione.com/" target="_blank" rel="noopener">UniAC</a> – Polo Tecnologico &amp; Universitario · PFL Group · Cirò Marina (KR)<br>Ente di formazione accreditato Regione Calabria · ISO 9001 · Numero Verde 800 598 033 · <a href="https://www.uniacformazione.com/privacy-policy/" target="_blank" rel="noopener">Privacy</a></div>
 </div>
-<script>var DA=(function(){var q=new URLSearchParams(location.search);return (q.get('da')||q.get('utm_source')||'').toLowerCase().replace(/[^a-z0-9_-]/g,'').slice(0,20)})();if(DA){['go','ent'].forEach(function(i){var a=document.getElementById(i);a.href+=(a.href.indexOf('?')<0?'?':'&')+'da='+DA})}</script></body></html>
+<script>var DA=(function(){var q=new URLSearchParams(location.search);return (q.get('da')||q.get('utm_source')||'').toLowerCase().replace(/[^a-z0-9_-]/g,'').slice(0,20)})();var API="https://script.google.com/macros/s/AKfycbyt_D2hqv5w2xhrUnJfLWKs0xN-9isJWoKo0dbQ-SvW7TiEuADCJJa1k2SKgfg5nCc_vQ/exec";
+function leggiFile(inp){return new Promise(function(ok,ko){var f=inp.files&&inp.files[0];if(!f)return ko('Allega il tuo CV (PDF, Word o foto).');if(f.size>5*1024*1024)return ko('Il file è troppo grande: massimo 5 MB.');var okt=/^(application\/pdf|image\/(jpeg|png)|application\/msword|application\/vnd\.openxmlformats-officedocument\.wordprocessingml\.document)$/;if(!okt.test(f.type))return ko('Formato non valido: usa PDF, Word, JPG o PNG.');var r=new FileReader();r.onload=function(){ok({nome:f.name,mime:f.type,b64:String(r.result).split(',')[1]})};r.onerror=function(){ko('Non riesco a leggere il file.')};r.readAsDataURL(f)})}
+function invia(d,b,er,box,grazie){b.disabled=true;er.textContent='Invio in corso... (può richiedere qualche secondo)';fetch(API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(d)}).then(function(r){return r.json()}).then(function(r){if(r&&r.ok){box.innerHTML=grazie}else{b.disabled=false;er.textContent=(r&&r.errore)||'Invio non riuscito. Riprova.'}}).catch(function(){b.disabled=false;er.textContent='Connessione non riuscita. Riprova oppure chiama il Numero Verde 800 598 033.'})}
+if(DA){var a=document.getElementById('ent');a.href+='?da='+DA}
+document.getElementById('f').onsubmit=function(ev){ev.preventDefault();var g=function(i){return (document.getElementById(i).value||'').trim()},er=document.getElementById('er'),b=document.getElementById('go');
+if(!g('n')||!g('c')){er.textContent='Compila nome e città.';return}
+if(g('p').replace(/\D/g,'').length<9){er.textContent='Scrivi un numero di telefono valido.';return}
+if(!document.getElementById('k').checked){er.textContent='Per inviare la candidatura serve il consenso.';return}
+leggiFile(document.getElementById('cv')).then(function(file){invia({action:'candidatura',tipo:'ambassador',nome:g('n'),citta:g('c'),telefono:g('p'),email:g('m'),consenso:true,canale:DA||'pagina',file:file},b,er,document.getElementById('box'),'<h2>Grazie!</h2><div class="ok">Abbiamo ricevuto la tua candidatura. La valutiamo e, se il profilo è adatto, ti contattiamo dal numero dell’ufficio <b>0962 19 16 684</b> per spiegarti tutto e fissare un colloquio online.</div>')},function(m){er.textContent=m})};</script></body></html>
