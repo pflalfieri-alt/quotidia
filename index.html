@@ -177,7 +177,7 @@ function corsi(){
 
 var DIP=null;window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();DIP=e});
 function installa(){var h=document.getElementById('insth');if(DIP){DIP.prompt();DIP=null;return}var ios=/iphone|ipad|ipod/i.test(navigator.userAgent);h.innerHTML=ios?'<b>iPhone:</b> tocca il tasto Condividi (quadrato con la freccia in su) in basso in Safari, poi <b>Aggiungi alla schermata Home</b>.':'<b>Android:</b> tocca i tre puntini in alto a destra, poi <b>Installa app</b> o <b>Aggiungi a schermata Home</b>.'}
-var VER='20261113i';(function(){try{fetch('index.html?_='+Date.now(),{cache:'no-store'}).then(function(r){return r.text()}).then(function(t){var m=t.match(/var VER='([^']+)'/);if(m&&m[1]!==VER){var k='uw_vtry';var n=0;try{n=Number(sessionStorage.getItem(k)||0)}catch(e){}if(n<2){try{sessionStorage.setItem(k,String(n+1))}catch(e){}location.replace(location.pathname+'?v='+m[1]+'&t='+Date.now())}}}).catch(function(){})}catch(e){}})();
+var VER='20261113j';(function(){try{fetch('index.html?_='+Date.now(),{cache:'no-store'}).then(function(r){return r.text()}).then(function(t){var m=t.match(/var VER='([^']+)'/);if(m&&m[1]!==VER){var k='uw_vtry';var n=0;try{n=Number(sessionStorage.getItem(k)||0)}catch(e){}if(n<2){try{sessionStorage.setItem(k,String(n+1))}catch(e){}location.replace(location.pathname+'?v='+m[1]+'&t='+Date.now())}}}).catch(function(){})}catch(e){}})();
 var RINF=0;function rinfresca(){if(!S.tok||RINF)return;RINF=1;call('profilo').then(function(r){RINF=0;if(r&&r.ok&&S.p){var c=S.p.crediti+'|'+S.p.in_maturazione+'|'+S.p.segnalazioni+'|'+S.p.iscritti;S.p=r;var n=r.crediti+'|'+r.in_maturazione+'|'+r.segnalazioni+'|'+r.iscritti;if(c!==n&&S.tab!=='irelia'&&S.tab!=='chat'){tab(S.tab)}}}).catch(function(){RINF=0})}
 document.addEventListener('visibilitychange',function(){if(!document.hidden)rinfresca()});
 function partnerInit(){call('partner_me').then(function(r){var o=document.getElementById('nvp');if(!r||!r.ok){S.part=null;if(o)o.remove();return}S.part=r;if(!o){var b=document.createElement('button');b.id='nvp';b.dataset.t='partner';b.innerHTML='<i>🤝</i>Partner';b.onclick=function(){tab('partner')};NAV.appendChild(b)}})}
@@ -308,7 +308,7 @@ var SID='';try{SID=localStorage.getItem('uw_sid')||'';if(!SID){SID=Math.random()
 var SA=!!(window.navigator.standalone||(window.matchMedia&&matchMedia('(display-mode: standalone)').matches));
 var DA=(function(){var q=new URLSearchParams(location.search),c=(q.get('da')||q.get('utm_source')||'').toLowerCase().replace(/[^a-z0-9_-]/g,'').slice(0,20),o=null;try{o=JSON.parse(localStorage.getItem('uw_da')||'null')}catch(e){}if(o&&o.c&&Date.now()-o.t<2592000000)return o.c;if(c){try{localStorage.setItem('uw_da',JSON.stringify({c:c,t:Date.now()}))}catch(e){}return c}return ''})();
 function st(t){try{fetch(API,{method:'POST',keepalive:true,headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'stat',tipo:t,sid:SID,ref:COD?'amico':(CA?'rete':''),sa:SA,v:'20261102',canale:DA})}).catch(function(){})}catch(e){}}
-(function(){var _c=call;call=function(a,d){var p=_c(a,d);if(a==='registra'||a==='irelia')p.then(function(r){if(r&&r.ok)st(a==='registra'?'registrazione':'nikyta')});return p}})();
+(function(){var _c=call;call=function(a,d){var p=_c(a,d);if(a==='registra'||a==='irelia')p.then(function(r){if(r&&r.ok){st(a==='registra'?'registrazione':'nikyta');if(a==='registra'&&window.qtrack)qtrack('CompleteRegistration')}});return p}})();
 window.addEventListener('appinstalled',function(){st('installata')});
 document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href^="https://wa.me"],#cp,#cp2');if(a)st('condivisione')});
 try{if(!sessionStorage.getItem('uw_v')){sessionStorage.setItem('uw_v','1');st('visita');if(SA)st('apertura_icona')}}catch(e){st('visita')}
@@ -427,6 +427,20 @@ function newsAzioni(x){var ii=newsInt(x);if(ii==null)return '';var n=NEWSL.index
  return '<div style="display:flex;flex-direction:column;gap:6px;margin-top:10px"><button class="btn" style="margin:0" onclick="tutorForm(null,'+ii+',\''+esc(String(x.titolo).slice(0,40)).replace(/'/g,'')+'\')">Mi interessa</button><button class="btn" style="margin:0;background:#F07D00" onclick="segnaRapida('+ii+')">👥 Segnala chi può essere interessato</button><button class="btn wa" style="margin:0" onclick="newsCondividi('+n+')">Condividi su WhatsApp</button>'+(S.p?'<small class="mu">Condividendo usi il tuo link: se chi lo apre lascia i dati, la segnalazione è tua.</small>':'<small class="mu">Per ricevere i crediti usa "Segnala" oppure crea un account: il link condiviso diventa il tuo.</small>')+'</div>'}
 
 if(COD){paginaAmico()} else if(S.tok){avvia()} else if(q.get('s')){accesso(true)} else {ospite()}
-</script><script>if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(function(){})</script></body></html>
+</script><script>if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(function(){})</script><script>
+(function(){var PX="1436930210008456";
+window.qtrack=function(ev,p){try{if(PX&&window.fbq)fbq('track',ev,p||{})}catch(e){}};
+if(!PX)return;
+var K='q_ck',v=null;try{v=localStorage.getItem(K)}catch(e){}
+function load(){!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init',PX);fbq('track','PageView')}
+if(v==='si'){load();return}if(v==='no')return;
+function set(x){try{localStorage.setItem(K,x)}catch(e){}var d=document.getElementById('qck');if(d)d.remove();if(x==='si')load()}
+function show(){if(document.getElementById('qck'))return;var d=document.createElement('div');d.id='qck';
+d.style.cssText='position:fixed;left:12px;right:12px;bottom:96px;z-index:9999;max-width:560px;margin:0 auto;background:#fff;color:#14203a;border-radius:16px;box-shadow:0 10px 40px rgba(0,0,0,.35);padding:14px 16px;font:14px/1.45 Inter,system-ui,sans-serif';
+d.innerHTML='<div style="margin-bottom:10px">Usiamo cookie tecnici e, solo se acconsenti, i cookie di Meta per misurare le nostre pubblicità. <a href="https://www.uniacformazione.com/cookie-policy/" target="_blank" rel="noopener" style="color:#0B3D82">Cookie policy</a></div><div style="display:flex;gap:8px"><button id="qckn" style="flex:1;padding:10px;border:1px solid #d5d9e2;border-radius:10px;background:#fff;color:#14203a;font:600 14px inherit;cursor:pointer">Rifiuta</button><button id="qcky" style="flex:1;padding:10px;border:0;border-radius:10px;background:#F07D00;color:#fff;font:700 14px inherit;cursor:pointer">Accetta</button></div>';
+document.body.appendChild(d);document.getElementById('qcky').onclick=function(){set('si')};document.getElementById('qckn').onclick=function(){set('no')}}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',show);else show();
+})();
+</script></body></html>
 
 <!-- v2 rete -->
