@@ -83,6 +83,19 @@ footer a{color:var(--blu)}
 		<p class="mu" id="msg" style="margin:10px 0 0">I dati restano sul tuo telefono. Puoi cambiarli quando vuoi.</p>
 	</section>
 
+	<section class="card hidden" id="cIsc">
+		<h2>Sei già iscritto con UniAC?</h2>
+		<div class="rit" id="isc">
+			<button type="button" data-v="si">Sì, sono iscritto</button>
+			<button type="button" data-v="no">Non ancora</button>
+		</div>
+		<div id="iscSi" class="hidden" style="margin-top:12px">
+			<p style="margin:0 0 10px;font-size:15px">La <b>didattica UniAC</b> ti segue fino alla laurea. Per un problema con la piattaforma, gli esami, le prenotazioni o i documenti scrivi a <b>Nikyta</b>: se non basta, avvisa lei la didattica e ti ricontattiamo.</p>
+			<a class="btn" href="./?nk=1&amp;da=percorso_iscritto">Chiedi a Nikyta</a>
+			<p class="mu" style="margin:10px 0 0">Oppure chiama il <a href="tel:800598033">Numero Verde 800 598 033</a>.</p>
+		</div>
+	</section>
+
 	<section class="card hidden" id="cRis">
 		<h2>2. A che punto sei</h2>
 		<div class="stat">
@@ -150,8 +163,10 @@ var API='https://www.uniacformazione.com/wp-json/wc/store/v1/products?category=1
 var HOOK='https://hook.eu1.make.com/mtp3un3eg38hm889qfk5ur12v1x4tfqm';
 /* Sessioni eCampus lauree: aggiornare qui quando eCampus comunica le date (fonte: email eCampus lette da Nikyta). */
 var SESSIONI=[
-	{n:'III sessione 2026/27',esami:'dal 16 dicembre 2026',pren:'date di prenotazione: chiedi al tutor'},
-	{n:'IV sessione 2026/27',esami:'dal 22 febbraio 2027',pren:'prenotazioni: date in arrivo'}
+	{n:'III sessione 2026/27',esami:'dal 14 dicembre 2026 al 20 febbraio 2027 (pausa dal 20 dicembre al 10 gennaio)',pren:'prenotazioni: chiedi a Nikyta o alla didattica'},
+	{n:'IV sessione 2026/27',esami:'dal 22 febbraio al 10 aprile 2027',pren:'prenotazioni: date in arrivo'},
+	{n:'V sessione 2026/27',esami:'dal 12 aprile al 29 maggio 2027',pren:'prenotazioni: date in arrivo'},
+	{n:'VI sessione 2026/27',esami:'dal 7 giugno al 24 luglio 2027',pren:'prenotazioni: date in arrivo'}
 ];
 var K='q_percorso_v1', data=[], st=load();
 function $(i){return document.getElementById(i)}
@@ -160,7 +175,7 @@ function load(){try{return JSON.parse(localStorage.getItem(K))||{}}catch(e){retu
 function save(){try{localStorage.setItem(K,JSON.stringify(st))}catch(e){}}
 function stat(ev){}
 function parse(p){
-	var d=p.description.replace(/<[^>]+>/g,'|').replace(/&#8217;/g,"'").replace(/&amp;/g,'&').replace(/&#8211;/g,'-').replace(/&#8230;/g,'...').replace(/&quot;/g,'"').replace(/&#8220;|&#8221;/g,'"');
+	var d=p.description.replace(/<[^>]+>/g,'|').replace(/&#8217;|&#0?39;|&#[xX]27;|&apos;/g,"'").replace(/&amp;/g,'&').replace(/&#8211;/g,'-').replace(/&#8230;/g,'...').replace(/&quot;/g,'"').replace(/&#8220;|&#8221;/g,'"');
 	var i=d.indexOf('Curriculum e piani'); if(i<0) return null;
 	var t=d.slice(i).split('|').map(function(x){return x.trim()}).filter(Boolean), out=[], c=null, y=0;
 	for(var k=1;k<t.length;k++){
@@ -175,7 +190,7 @@ function parse(p){
 }
 function corsi(){
 	fetch(API).then(function(r){return r.json()}).then(function(j){
-		data=j.map(function(p){var m=p.name.match(/\b(LM?-\d+)\b/);return {id:p.id,n:p.name.replace(/&#8217;/g,"'").replace(/&amp;/g,'&').replace(/ LM?-\d+$/,''),cl:m?m[1]:'',cur:parse(p)}}).filter(function(o){return o.cur&&o.cur.length&&o.cur[0].e.length}).sort(function(a,b){return a.n.localeCompare(b.n)});
+		data=j.map(function(p){var m=p.name.match(/\b(LM?-\d+)\b/);return {id:p.id,n:p.name.replace(/&#8217;|&#0?39;|&#[xX]27;|&apos;/g,"'").replace(/&amp;/g,'&').replace(/ LM?-\d+$/,'').replace(/^Laurea (magistrale )?in /i,''),cl:m?m[1]:'',cur:parse(p)}}).filter(function(o){return o.cur&&o.cur.length&&o.cur[0].e.length}).sort(function(a,b){return a.n.localeCompare(b.n)});
 		var h='<option value="">Scegli il tuo corso…</option>'; data.forEach(function(o,i){h+='<option value="'+i+'">'+esc(o.n)+(o.cl?' ('+o.cl+')':'')+'</option>'});
 		$('sL').innerHTML=h;
 		if(st.lid){var i=data.findIndex(function(o){return String(o.id)===String(st.lid)}); if(i>=0){$('sL').value=i; scegliL(false);}}
@@ -185,9 +200,10 @@ function L(){var i=$('sL').value;return i===''?null:data[+i]}
 function C(){var l=L();if(!l)return null;return l.cur[+($('sC').value||0)]||l.cur[0]}
 function tot(){var l=L();return l&&/^LM/.test(l.cl)?120:180}
 function scegliL(nuovo){
-	var l=L(); ['cRis','cEs','cSes','cNk','cTut'].forEach(function(x){$(x).classList.toggle('hidden',!l)});
+	var l=L(); ['cIsc','cRis','cEs','cSes','cNk','cTut'].forEach(function(x){$(x).classList.toggle('hidden',!l)});
 	if(!l){return}
-	if(nuovo&&String(st.lid)!==String(l.id)){st={lid:l.id,cur:0,ex:{},voti:{},rit:st.rit||2,extra:0};save();stat('percorso_corso');}
+	isc();
+	if(nuovo&&String(st.lid)!==String(l.id)){st={lid:l.id,cur:0,ex:{},voti:{},rit:st.rit||2,extra:0,isc:st.isc||''};save();stat('percorso_corso');}
 	st.lid=l.id;
 	var h=''; l.cur.forEach(function(c,i){h+='<option value="'+i+'">'+esc(c.n)+'</option>'});
 	$('sC').innerHTML=h; $('wC').classList.toggle('hidden',l.cur.length<2); $('sC').value=st.cur||0;
@@ -217,6 +233,9 @@ function sessioni(){var h='';SESSIONI.forEach(function(s){h+='<div class="ses"><
 $('sL').addEventListener('change',function(){scegliL(true)});
 $('sC').addEventListener('change',function(){st.cur=+$('sC').value;st.ex={};st.voti={};save();disegna()});
 $('extra').addEventListener('input',function(){st.extra=Math.max(0,parseInt($('extra').value)||0);save();calc()});
+/* ISCRITTO_18NOV: gli iscritti vanno alla didattica tramite Nikyta, il modulo tutor resta per chi non e' ancora iscritto */
+function isc(){var v=st.isc||'';[].forEach.call($('isc').children,function(b){b.classList.toggle('on',b.dataset.v===v)});$('iscSi').classList.toggle('hidden',v!=='si');$('cTut').classList.toggle('hidden',v==='si'||!L());}
+$('isc').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;st.isc=b.dataset.v;save();isc();stat('percorso_isc_'+st.isc)});
 $('rit').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;st.rit=+b.dataset.v;save();calc()});
 $('lista').addEventListener('click',function(e){var b=e.target.closest('.st');if(!b)return;var i=b.dataset.i;st.ex=st.ex||{};st.ex[i]=(((st.ex[i]||0)+1)%3);if(st.ex[i]!==2&&st.voti)delete st.voti[i];save();disegna();stat('percorso_esame')});
 $('lista').addEventListener('input',function(e){var t=e.target;if(!t.classList.contains('voto'))return;st.voti=st.voti||{};st.voti[t.dataset.v]=t.value;save();calc()});
