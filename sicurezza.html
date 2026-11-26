@@ -20,6 +20,9 @@ header{background:var(--blu);color:#fff;padding:22px max(4vw,16px) 18px;position
 header:after{content:"";position:absolute;left:0;right:0;bottom:-10px;height:10px;background:repeating-linear-gradient(-45deg,var(--gi) 0 18px,#111 18px 36px)}
 header h1{margin:0;font-size:clamp(26px,3.4vw,40px);line-height:1.05;font-weight:800}
 header p{margin:6px 0 0;color:#cfd5e2;max-width:70ch}
+.visbox{border:2px dashed var(--gi);border-radius:12px;padding:12px;margin:4px 0 12px;background:var(--soft)}
+.visbtn{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border-radius:10px;background:var(--gi);color:#111;font-weight:700;cursor:pointer;margin:0}
+#visEsito ul{margin:8px 0 0;padding-left:18px;font-size:14px}#visEsito .ok{color:var(--ok)}#visEsito .ko{color:var(--ko)}
 header .top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
 header .loghi{display:flex;align-items:center;gap:12px;background:#fff;border-radius:12px;padding:6px 14px}
 header .loghi img{height:56px;width:auto;display:block}header .loghi .sep{width:1px;height:36px;background:#c9ced8}
@@ -117,6 +120,8 @@ footer a{color:inherit}
 
     <section class="step" data-i="1">
       <h2>1. L'azienda</h2>
+      <div class="visbox"><label for="visFile" class="visbtn">📄 Carica la visura camerale (PDF)</label><input id="visFile" type="file" accept="application/pdf,.pdf" hidden>
+      <p class="hint" style="margin:6px 0 0">Compilo io ragione sociale, P.IVA, ATECO, lavoratori e dati del legale rappresentante. Il file resta sul tuo computer.</p><div id="visEsito" aria-live="polite"></div></div>
       <label for="rag">Ragione sociale</label><input id="rag" placeholder="Es. Rossi Costruzioni Srl">
       <label for="piva">Partita IVA</label><input id="piva" inputmode="numeric" maxlength="11" placeholder="11 cifre">
       <p class="hint" id="pivaInfo"></p>
@@ -598,6 +603,51 @@ function faHtml(){const s=read();const n=+s.nLav||0;const dim=faDim(n);const v=k
  ${firma}</div>`}
 function scarica(html,nome,msg){try{const h=`<html><head><meta charset="utf-8"><style>body{font-family:Arial;font-size:11pt}table{border-collapse:collapse;width:100%}</style></head><body>${html}</body></html>`;const b=new Blob(['﻿'+h],{type:'application/msword'});const u=URL.createObjectURL(b);const l=document.createElement('a');l.href=u;l.download=nome;document.body.appendChild(l);l.click();l.remove();$(msg).textContent='Download avviato.'}catch(_){$(msg).textContent='Download non consentito qui: usa Stampa / PDF.'}}
 function stampaHtml(html){let pa=$('printArea');if(!pa){pa=document.createElement('div');pa.id='printArea';document.body.appendChild(pa)}pa.innerHTML=html;document.body.classList.add('pp');try{window.print()}catch(_){}setTimeout(()=>{document.body.classList.remove('pp');pa.innerHTML=''},800)}
+
+
+// ===== VISURA CAMERALE (PDF) =====
+let PDFJS=null;
+function caricaPdfjs(){if(PDFJS)return Promise.resolve(PDFJS);return new Promise((res,rej)=>{const s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';s.onload=()=>{PDFJS=window.pdfjsLib;PDFJS.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';res(PDFJS)};s.onerror=()=>rej(new Error('rete'));document.head.appendChild(s)})}
+async function testoPdf(buf){const lib=await caricaPdfjs();const doc=await lib.getDocument({data:buf}).promise;const righe=[];
+ for(let i=1;i<=Math.min(doc.numPages,15);i++){const pg=await doc.getPage(i);const tc=await pg.getTextContent();const L=[];
+  tc.items.forEach(it=>{if(!it.str||!it.str.trim())return;const y=Math.round(it.transform[5]),x=it.transform[4];let r=L.find(l=>Math.abs(l.y-y)<=3);if(!r){r={y,it:[]};L.push(r)}r.it.push({x,s:it.str})});
+  L.sort((a,b)=>b.y-a.y).forEach(r=>righe.push(r.it.sort((a,b)=>a.x-b.x).map(o=>o.s).join(' ').replace(/\s+/g,' ').trim()))}
+ return righe}
+function tc(s){return String(s||'').toLowerCase().replace(/(^|[\s'(\-])([a-zàèéìòù])/g,(m,a,b)=>a+b.toUpperCase())}
+function leggiVisura(R){const T=R.join('\n'),o={};let m;
+ if((m=T.match(/Denominazione:\s*(.+)/)))o.rag=m[1].trim();
+ if(!o.rag){const r=R.find(x=>/\S\s+DATI ANAGRAFICI/.test(x));if(r)o.rag=r.replace(/\s*DATI ANAGRAFICI.*/,'').trim()}
+ if(!o.rag){const r=R.find(x=>/^Registro Imprese\s+\S/.test(x)&&!/Archivio|Codice|Documento/i.test(x));if(r)o.rag=r.replace(/^Registro Imprese\s+/,'').trim()}
+ if((m=T.match(/Partita IVA\s+(\d{11})/)))o.piva=m[1];
+ if((m=T.match(/Codice fiscale(?:\s+e\s+n\.?\s*iscr[^\d\n]*)?\s+([0-9]{11}|[A-Z0-9]{16})/i)))o.cf=m[1];
+ if(!o.piva&&o.cf&&/^\d{11}$/.test(o.cf)&&/S\.?R\.?L|S\.?P\.?A|S\.?N\.?C|S\.?A\.?S|societ/i.test(T))o.piva=o.cf;
+ const pec=T.match(/[A-Za-z0-9._%+-]+@(?:[A-Za-z0-9-]+\.)*(?:pec|legalmail|postacert|arubapec|cert)[A-Za-z0-9.-]*\.[a-z]{2,}/i);if(pec)o.pec=pec[0];
+ {const C=[];R.forEach((x,i)=>{if(!/Indirizzo Sede/i.test(x))return;let a=x.replace(/.*Indirizzo Sede( legale)?\s*/i,'').trim();if(/CAP\s*\d{5}/.test(a)){C.push({a,ok:1});return}const n=R[i+1]||'';if(/CAP\s*\d{5}/.test(n))C.push({a:a+' '+n,ok:/^(VIA|V\.LE|VIALE|CORSO|C\.SO|PIAZZA|P\.ZZA|LOCALIT|LOC\.|CONTRADA|C\.DA|VICOLO|STRADA|LARGO|FRAZ)/i.test(n)?1:0});else C.push({a,ok:0})});
+  const b=C.find(c=>c.ok)||C[0];if(b)o.ind=b.a.replace(/\s*Telefono.*$/i,'').replace(/\s+/g,' ').trim()}
+ const cod=[...T.matchAll(/Codice:\s*(\d{2}\.\d{1,2}(?:\.\d{1,2})?)\s*-\s*([^\n]+)/g)];if(cod.length){o.ateco=cod[0][1];o.atecoDesc=cod[0][2].trim();o.atecoAltri=[...new Set(cod.slice(1).map(c=>c[1]))].filter(c=>c!==o.ateco)}
+ if((m=T.match(/Dipendenti\s+(\d+)/)))o.dip=+m[1];else if((m=T.match(/\bAddetti\s+(\d+)\b/)))o.dip=+m[1];
+ const iR=R.findIndex(x=>/Rappresentante (dell'impresa|del soggetto|legale)/i.test(x));
+ if(iR>=0){const nm=R[iR].match(/((?:[A-ZÀ-Ý'][A-ZÀ-Ý']+\s+){1,4}[A-ZÀ-Ý'][A-ZÀ-Ý']+)\s+Rappresentante/);if(nm)o.lr=tc(nm[1]);
+  for(let j=iR;j<Math.min(R.length,iR+8);j++){const n=R[j].match(/Nat[oa] a (.+?) il (\d{2}\/\d{2}\/\d{4})/);if(n){o.luogo=n[1].trim();o.nato=n[2];break}}}
+ if((m=T.match(/Forma giuridica\s+(.+)/)))o.forma=m[1].trim();
+ return o}
+window.__vis={testoPdf,leggiVisura};
+document.addEventListener('change',async e=>{if(e.target.id!=='visFile')return;const f=e.target.files&&e.target.files[0];const box=$('visEsito');if(!f)return;
+ box.innerHTML='<p class="note">Leggo la visura…</p>';
+ try{const R=await testoPdf(new Uint8Array(await f.arrayBuffer()));if(R.join('').replace(/\s/g,'').length<200){box.innerHTML='<p class="ko">Questa visura sembra una scansione (foto): non riesco a leggerla. Compila i dati a mano.</p>';return}
+  const o=leggiVisura(R),fatti=[],manca=[];
+  const set=(id,v,et)=>{if(v==null||v===''){manca.push(et);return}$(id).value=v;$(id).dispatchEvent(new Event('input',{bubbles:true}));fatti.push(et+': <b>'+esc(String(v))+'</b>')};
+  set('rag',o.rag,'Ragione sociale');set('piva',o.piva,'Partita IVA');set('ateco',o.ateco,'Codice ATECO');
+  if(o.dip!=null){$('nLav').value=o.dip;fatti.push('Lavoratori dipendenti (dati INPS della visura): <b>'+o.dip+'</b> – controlla e aggiungi soci lavoratori o apprendisti se mancano')}else manca.push('numero dei lavoratori');
+  const fa={lr:o.lr,nato:o.nato,luogo:o.luogo,ind:o.ind,pec:o.pec,cf:(o.cf&&o.cf!==o.piva)?o.cf:''};Object.keys(fa).forEach(k=>{if(fa[k])FA[k]=fa[k]});
+  if(o.lr)fatti.push('Legale rappresentante: <b>'+esc(o.lr)+'</b>'+(o.nato?' (nato a '+esc(o.luogo)+' il '+esc(o.nato)+')':''));else manca.push('legale rappresentante');
+  if(o.ind)fatti.push('Sede: '+esc(o.ind));if(o.pec)fatti.push('PEC: '+esc(o.pec));
+  if(o.atecoAltri&&o.atecoAltri.length)fatti.push('Altri codici ATECO nella visura: '+esc(o.atecoAltri.join(', '))+' (vale il prevalente)');
+  {const dv=$('dvAtt');if((!dv||!dv.value)&&o.atecoDesc)dvrMem.dvAtt=dvrMem.dvAtt||tc(o.atecoDesc)}if(o.ind)dvrMem.dvSede=dvrMem.dvSede||o.ind;if(o.lr)dvrMem.dvDL=dvrMem.dvDL||o.lr;
+  window.__visura={nome:f.name,dati:o};save();calc(false);
+  box.innerHTML='<p class="ok"><b>Visura letta.</b> Controlla i dati:</p><ul>'+fatti.map(x=>'<li>'+x+'</li>').join('')+'</ul>'+(manca.length?'<p class="ko" style="margin:6px 0 0">Non trovati: '+esc(manca.join(', '))+'. Compilali a mano.</p>':'')+'<p class="note" style="margin:6px 0 0">I dati del legale rappresentante sono già nell\'Allegato A FondItalia.</p>';
+ }catch(err){box.innerHTML='<p class="ko">Non riesco a leggere il PDF ('+esc(err.message||'errore')+'). Riprova o compila a mano.</p>'}
+ e.target.value=''});
 
 function argomenti(o){const t=[];
  t.push('Dal 2025 anche il datore di lavoro deve fare il corso di 16 ore, entro maggio 2027: molti non lo sanno.');
