@@ -35,15 +35,14 @@ input[type=file]{padding:10px;background:#f7f8fb}.hint{font-size:.8rem;color:#5a
 <p class="lead">Ogni giorno qualcuno ti chiede di una laurea, dei punti per le graduatorie, di una qualifica o di un corso sulla sicurezza. Con Quotidia lo segnali in un minuto: un tutor UniAC lo chiama e lo segue fino all'iscrizione.</p>
 <ul class="ck"><li>Compenso su ogni iscrizione</li><li>Nessun investimento e nessuna quota d'ingresso</li><li>Kit Quotidia: locandine, espositore da banco, pieghevoli</li><li>Area Partner dal PC o dal telefono, per seguire ogni segnalazione</li></ul>
 </div>
-<div class="card" id="box"><h2>Candidati come partner</h2><p class="mu">Lasciaci i dati e il CV del referente: se il profilo è adatto ti contattiamo per spiegarti tutto e fissare un colloquio.</p>
+<div class="card" id="box"><h2>Candidati come partner</h2><p class="mu">Lasciaci i tuoi dati: ti chiamiamo per spiegarti tutto e fissare un colloquio.</p>
 <form id="f" novalidate>
 <label for="n">Nome e cognome</label><input id="n" autocomplete="name" required>
 <label for="e">Nome del CAF, patronato, sindacato o agenzia</label><input id="e" autocomplete="organization" required>
 <label for="t">Tipo</label><select id="t"><option>CAF</option><option>Patronato</option><option>Sindacato</option><option>Agenzia</option><option>Altro</option></select>
 <label for="c">Città e provincia</label><input id="c" autocomplete="address-level2" required>
 <label for="p">Telefono</label><input id="p" type="tel" inputmode="tel" autocomplete="tel" required>
-<label for="m">Email (facoltativa)</label><input id="m" type="email" autocomplete="email">
-<label for="cv">CV del referente</label><input id="cv" type="file" accept=".pdf,.doc,.docx,image/jpeg,image/png"><div class="hint">PDF, Word o foto, massimo 5 MB.</div>
+<label for="m">Email</label><input id="m" type="email" autocomplete="email" required>
 <div class="cons"><input type="checkbox" id="k"><label for="k" style="margin:0">Acconsento al trattamento dei miei dati per essere ricontattato da UniAC Srl, come indicato nella <a href="https://www.uniacformazione.com/privacy-policy/" target="_blank" rel="noopener">privacy policy</a>.</label></div>
 <button class="btn" id="go" type="submit">Invia la candidatura</button><div class="err" id="er" role="alert"></div>
 </form></div></div>
@@ -61,8 +60,9 @@ function invia(d,b,er,box,grazie){b.disabled=true;er.textContent='Invio in corso
 document.getElementById('f').onsubmit=function(ev){ev.preventDefault();var g=function(i){return (document.getElementById(i).value||'').trim()},er=document.getElementById('er'),b=document.getElementById('go');
 if(!g('n')||!g('e')||!g('c')){er.textContent='Compila nome, ente e città.';return}
 if(g('p').replace(/\D/g,'').length<9){er.textContent='Scrivi un numero di telefono valido.';return}
+if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(g('m'))){er.textContent='Scrivi un indirizzo email valido.';return}
 if(!document.getElementById('k').checked){er.textContent='Per essere ricontattato serve il consenso.';return}
-leggiFile(document.getElementById('cv')).then(function(file){invia({action:'candidatura',tipo:'partner',nome:g('n'),ente:g('e'),tipoEnte:g('t'),citta:g('c'),telefono:g('p'),email:g('m'),consenso:true,canale:DA||'pagina',file:file},b,er,document.getElementById('box'),'<h2>Grazie!</h2><div class="ok">Abbiamo ricevuto la tua candidatura. La valutiamo e, se il profilo è adatto, ti contattiamo dal numero dell\'ufficio <b>0962 19 16 684</b> per spiegarti tutto e fissare un colloquio.</div>')},function(m){er.textContent=m})};</script><script>
+(function(){invia({action:'candidatura',tipo:'partner',nome:g('n'),ente:g('e'),tipoEnte:g('t'),citta:g('c'),telefono:g('p'),email:g('m'),consenso:true,canale:DA||'pagina'},b,er,document.getElementById('box'),'<h2>Grazie!</h2><div class="ok">Abbiamo ricevuto la tua candidatura. Ti chiamiamo a breve per spiegarti tutto e fissare un colloquio; poi ti mandiamo un\'email di riepilogo.</div>')})()};</script><script>
 (function(){var PX="1436930210008456";
 var TT="DBRDUTRC77UFHI4PLHB0",TTM={Lead:'SubmitForm',CompleteRegistration:'CompleteRegistration'};
 window.qtrack=function(ev,p){try{if(PX&&window.fbq)fbq('track',ev,p||{})}catch(e){}try{if(TT&&window.ttq&&window.ttq.track)ttq.track(TTM[ev]||ev,p||{})}catch(e){}};
