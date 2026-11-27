@@ -144,7 +144,7 @@ footer{background:#021a3a;color:rgba(255,255,255,.7);font-size:12.5px;text-align
 
 <footer>Quotidia™ by UniAC · UniAC Srl · Formazione erogata da Programma Formazione Lavoro A.P.S.<br>Numero Verde <a href="tel:800598033">800 598033</a> · <a href="https://www.uniacformazione.com/privacy-policy/">Privacy</a></footer>
 <script>
-try{localStorage.setItem('uw_home_vista','1')}catch(e){}
+try{localStorage.setItem('uw_home_vista','1');sessionStorage.setItem('uw_home_ok','1')}catch(e){}
 var DIP=null;window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();DIP=e});
 document.querySelectorAll('a.inst').forEach(function(a){a.addEventListener('click',function(ev){if(DIP){ev.preventDefault();DIP.prompt();DIP.userChoice.then(function(){location.href='/?da=home'});DIP=null;return}var ios=/iphone|ipad|ipod/i.test(navigator.userAgent);if(ios){ev.preventDefault();var h=document.getElementById('insth');h.innerHTML='<b>iPhone:</b> tocca Condividi (il quadrato con la freccia) in basso in Safari, poi <b>Aggiungi alla schermata Home</b>.';h.scrollIntoView({behavior:'smooth',block:'center'})}})});
 document.querySelectorAll('a.card[data-p]').forEach(function(a){a.addEventListener('click',function(){try{localStorage.setItem('uw_prof',a.dataset.p)}catch(e){}})});
