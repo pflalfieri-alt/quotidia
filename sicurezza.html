@@ -123,7 +123,7 @@ footer a{color:inherit}
       <div class="visbox"><label for="visFile" class="visbtn">📄 Carica la visura camerale (PDF)</label><input id="visFile" type="file" accept="application/pdf,.pdf" hidden>
       <p class="hint" style="margin:6px 0 0">Compilo io ragione sociale, P.IVA, ATECO, lavoratori e dati del legale rappresentante. Il file resta sul tuo computer.</p><div id="visEsito" aria-live="polite"></div></div>
       <label for="rag">Ragione sociale</label><input id="rag" placeholder="Es. Rossi Costruzioni Srl">
-      <label for="piva">Partita IVA</label><input id="piva" inputmode="numeric" maxlength="11" placeholder="11 cifre">
+      <label for="piva">Partita IVA *</label><input id="piva" inputmode="numeric" maxlength="11" placeholder="11 cifre">
       <p class="hint" id="pivaInfo"></p>
       <label for="ateco">Codice ATECO (dalla visura) *</label><input id="ateco" inputmode="decimal" placeholder="Es. 43.21.01">
       <label for="div">oppure scegli il settore</label><select id="div"></select>
@@ -748,7 +748,7 @@ function goStep(n){step=Math.min(NS+1,Math.max(1,n));document.querySelectorAll('
  if(step>NS)calc(false);const fatto=step>NS||window.__fatto;if(step>NS)window.__fatto=true;$('res').hidden=!fatto;$('attesa').hidden=!!fatto;
  if(step>NS){$('res').scrollIntoView({behavior:'smooth',block:'start'})}}
 function checkStep(){const s=read();
- if(step===1){if(!s.div)return 'Inserisci il codice ATECO o scegli il settore.';if(s.piva&&!pivaOk(s.piva))return 'La partita IVA non sembra corretta (11 cifre).'}
+ if(step===1){if(!s.div)return 'Inserisci il codice ATECO o scegli il settore.';{const pe=$('piva');pe.style.borderColor='';if(!s.piva){pe.style.borderColor='#d93025';pe.focus();return 'Inserisci la partita IVA (11 cifre).'}if(!pivaOk(s.piva)){pe.style.borderColor='#d93025';pe.focus();return 'Partita IVA non valida: controlla le cifre.'}}}
  if(step===2){if(!(+s.nLav>0))return 'Indica quanti lavoratori ha l\'azienda.';if(!s.ccnl)return 'Scegli il contratto collettivo (se non lo sai: "Altro / da verificare").';if(+s.nPrep>+s.nLav)return 'I preposti non possono essere più dei lavoratori.'}
  if(step===3){if(!s.dvrEs)return 'Indica se il DVR è presente e aggiornato.';if(!s.mcSt)return 'Indica medico competente e visite mediche.';if(+s.lavOk>+s.nLav)return 'I lavoratori formati sono più dei lavoratori.';if(+s.prepOk>+s.nPrep)return 'I preposti formati sono più dei preposti.'}
  return ''}
